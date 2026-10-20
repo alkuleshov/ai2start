@@ -823,6 +823,25 @@ async function goPay(id, btn){
   catch(ex){ err.textContent=ex.message; err.hidden=false; btn.disabled=false; btn.textContent=label; }
 }
 function startBooking(b){ booking=b; renderBookForm(); openOverlay("book"); }
+/* «Хочу первым»: лист ожидания курса, интенсива, бота */
+let waitItem = null;
+function renderWaitForm(id){
+  waitItem = id; const s = byId[id];
+  $("#book-sheet").innerHTML = `
+    <div class="sheet-head"><h3 id="book-title">Хочу первым</h3>${closeBtn}</div>
+    <div class="summary"><span>${esc(s.t)}</span><span>${esc(s.time)}</span></div>
+    <p class="note">Напишем на почту, как только откроем запись, раньше, чем объявим публично. Ничего платить не нужно.</p>
+    <form id="wait-form" novalidate style="display:grid;gap:14px">
+      <div class="field"><label for="w-name">Как к вам обращаться</label><input type="text" id="w-name" autocomplete="name" placeholder="Имя"></div>
+      <div class="field"><label for="w-email">Электронная почта</label><input type="email" id="w-email" autocomplete="email" inputmode="email" placeholder="name@example.com"></div>
+      <div class="field"><label for="w-contact">Телефон или Telegram (по желанию)</label><input type="text" id="w-contact" autocomplete="tel" placeholder="+7… или @username"></div>
+      <div class="field"><label for="w-comment">Что хотите получить (по желанию)</label><input type="text" id="w-comment" maxlength="300" placeholder="Например: ребёнку 12 лет, хотим про учёбу"></div>
+      <label class="check"><input type="checkbox" id="w-consent"> <span>Согласен на обработку персональных данных (<a href="privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>
+      <p class="err" id="w-err" hidden></p>
+      <div><button class="btn" type="submit" id="w-submit">Записаться в лист ожидания</button></div>
+    </form>`;
+  $("#w-name").focus();
+}
 
 /* ссылка ?booking=ID: статус заявки; &pay=1 — из письма «оплатите»; без pay — возврат с ЮKassa */
 async function checkReturn(){
@@ -866,8 +885,21 @@ document.addEventListener("click",e=>{
     if(s) startBooking({kind:"stream", svc:s.service, stream:s.id, title:s.title, price:s.price, when:`${streamDates(s).join(", ")} · ${s.time} (Мск)`});
     else { $("#schedule").scrollIntoView({behavior:reduced?"auto":"smooth"}); toast("Набор откроется скоро, напишите в бот поддержки"); }
     return; }
-  if(t.dataset.wait){ toast("Откроем бота поддержки: напишите «Хочу первым»"); window.open(`https://t.me/${SUPPORT_BOT}`,"_blank","noopener"); return; }
+  if(t.dataset.wait){ renderWaitForm(t.dataset.wait); openOverlay("book"); return; }
   if(t.dataset.banner){ openStudio(t.dataset.banner); return; }
+});
+document.addEventListener("submit",async e=>{
+  if(e.target.id!=="wait-form") return; e.preventDefault();
+  const name=$("#w-name").value.trim(), email=$("#w-email").value.trim(), err=$("#w-err"), btn=$("#w-submit");
+  const msg = !name?"Напишите, как к вам обращаться.":!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)?"Проверьте адрес почты.":!$("#w-consent").checked?"Отметьте согласие на обработку данных.":"";
+  if(msg){ err.textContent=msg; err.hidden=false; return; }
+  err.hidden=true; btn.disabled=true; const label=btn.textContent; btn.textContent="Записываем…";
+  try{
+    await api("/api/lead",{method:"POST", body:JSON.stringify({item:waitItem, name, email, contact:$("#w-contact").value.trim(), comment:$("#w-comment").value.trim(), consent:true})});
+    $("#book-sheet").innerHTML = `<div class="done"><div class="big">✓</div><h3 id="book-title">Вы в листе ожидания</h3>
+      <p>${esc(byId[waitItem].t)}</p><p class="hint">Напишем на ${esc(email)}, как только откроем запись. Вопросы — в ${supportLink}.</p>
+      <button class="btn" data-close="book">Отлично</button></div>`;
+  }catch(ex){ err.textContent=ex.message; err.hidden=false; btn.disabled=false; btn.textContent=label; }
 });
 document.addEventListener("submit",async e=>{
   if(e.target.id!=="book-form") return; e.preventDefault();
