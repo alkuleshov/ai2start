@@ -243,7 +243,8 @@ nav.links a:hover{background:var(--busy)}
 .lead{font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--muted);max-width:52ch;margin-top:20px}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
 .trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.trust span{font-size:13px;font-weight:600;border:1.5px dashed var(--muted);border-radius:999px;padding:5px 11px;color:var(--muted)}
+.trust :is(span,a){font-size:13px;font-weight:600;border:1.5px dashed var(--muted);border-radius:999px;padding:5px 11px;color:var(--muted)}
+.trust a{color:var(--fg);border-style:solid;text-decoration:none}
 .board{position:relative;min-height:440px}
 .board canvas.scene{position:absolute;left:-40px;top:-50px;width:calc(100% + 80px);height:calc(100% + 100px);pointer-events:none;z-index:0}
 .toy{position:absolute;z-index:2;pointer-events:none;filter:drop-shadow(0 20px 18px rgba(27,21,48,.34));animation:toyfloat var(--dur,4.2s) ease-in-out infinite;transition:translate .5s cubic-bezier(.2,.8,.2,1)}
@@ -360,7 +361,18 @@ select:focus-visible{outline:3px solid color-mix(in srgb,var(--fg) 45%,transpare
 .faq > div:nth-child(2){--c:var(--lilac)}.faq > div:nth-child(3){--c:var(--sun)}.faq > div:nth-child(4){--c:var(--lime)}
 .faq b{display:block;font-family:var(--font-display);font-size:19px;margin-bottom:8px}
 .faq p{font-size:15px;opacity:.85}
-.about .panel{padding:26px 30px;max-width:820px;margin-inline:auto}.about p{margin:0;font-size:17px;line-height:1.55}
+.about .panel{padding:26px 30px;max-width:880px;margin-inline:auto}.about p{margin:0;font-size:17px;line-height:1.55}
+.author{display:flex;gap:20px;align-items:center;margin-bottom:16px}
+.author > div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.author h3{font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.2rem);margin:0}
+.author-photo{width:132px;height:132px;flex:none;border-radius:50%;object-fit:cover;box-shadow:0 0 0 5px #fff,0 12px 24px -8px rgba(27,21,48,.45)}
+.author-role{font-weight:600;opacity:.85;font-size:16px!important}
+.facts{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:8px}
+.facts li{position:relative;padding-left:26px;line-height:1.45}
+.facts li::before{content:"";position:absolute;left:4px;top:.45em;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 15%,transparent 40%),var(--lime)}
+.about-mp{opacity:.9;font-size:16px!important}
+.author-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+@media (max-width:560px){.author{flex-direction:column;align-items:flex-start}.author-photo{width:112px;height:112px}}
 footer{margin-top:40px;padding-block:28px 40px;border-top:1.5px solid color-mix(in srgb,var(--fg) 14%,transparent);display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
 footer p{color:var(--muted);max-width:60ch}
 footer .links2{display:grid;gap:6px;font-size:14px;align-content:start;color:var(--muted)}
@@ -475,7 +487,7 @@ footer .links2 b{color:var(--fg)}
           <a class="btn" href="#services">Выбрать задачу</a>
           <button class="btn btn-plain" data-goto="bots">ChatGPT, Claude, Gemini</button>
         </div>
-        <div class="trust"><span>Повторите всё сами, без второй встречи</span><span>Пароли остаются у вас</span><span>Оплата картой и СБП</span><span>Наставник по нейросетям</span></div>
+        <div class="trust"><span>Повторите всё сами, без второй встречи</span><span>Пароли остаются у вас</span><span>Оплата картой и СБП</span><a href="#about">Кто ведёт встречи</a></div>
       </div>
       <div class="board" id="board" aria-label="Примеры результата">
         <div class="sticker surf st1"><small>Почта · пример</small><b>Входящие под контролем</b><div class="delta"><s>4 812</s> → 0 непрочитанных</div></div>
@@ -553,9 +565,28 @@ footer .links2 b{color:var(--fg)}
 
   <section class="sec about" id="about" data-sec="about" data-m="candy">
     <div class="panel">
-      <h3 style="font-family:var(--font-display);margin:0 0 8px">О проекте</h3>
-      <p><b>ai2start</b> — маркетплейс навыков работы с нейросетями. Выберите задачу, которая нужна именно вам, и за одну встречу получите готовый результат и понимание, как дальше всё повторить самостоятельно.</p>
-      <p style="margin-top:10px">Встречи ведут эксперты по обучению: преподаватели курсов о нейросетях в креативных профессиях и практики, которые каждый день работают с ИИ и умеют объяснять сложное простыми словами.</p>
+      <div class="author">
+        <img class="author-photo" src="assets/kuleshov.jpg" alt="Александр Кулешов" width="320" height="320" loading="lazy" decoding="async">
+        <div>
+          <span class="tag" style="align-self:flex-start">Кто ведёт встречи</span>
+          <h3>Александр Кулешов</h3>
+          <p class="author-role">Наставник по нейросетям, автор и руководитель курсов лаборатории ai2arch</p>
+        </div>
+      </div>
+      <ul class="facts">
+        <li>Дипломированный преподаватель высшей школы и дополнительного образования (ЮФУ)</li>
+        <li>Автор курсов «ИИ в архитектуре» и «ИИ в редевелопменте» на базе ЮФУ: 16 ноября стартует третий поток</li>
+        <li>Читает приглашённые лекции о нейросетях в вузах, в том числе в РАНХиГС</li>
+        <li>Учит преподавателей распознавать тексты и работы, сделанные ИИ</li>
+        <li>15 лет практики в архитектуре и городских проектах, сооснователь креативного кластера С52 в Ростове-на-Дону</li>
+        <li>Папа двоих детей: всё, что советуем семьям, сначала проверяем дома</li>
+      </ul>
+      <p class="about-mp"><b>ai2start</b> — маркетплейс навыков работы с нейросетями. Встречи ведут Александр и эксперты по обучению: преподаватели курсов о нейросетях в креативных профессиях и практики, которые каждый день работают с ИИ и объясняют сложное простыми словами.</p>
+      <div class="author-links">
+        <a class="btn btn-plain btn-sm" href="https://ai2arch.ru" target="_blank" rel="noopener">Курсы ai2arch.ru</a>
+        <a class="btn btn-plain btn-sm" href="https://ku1eshov.ru" target="_blank" rel="noopener">Личный сайт ku1eshov.ru</a>
+        <a class="btn btn-plain btn-sm" href="https://t.me/ai2arch" target="_blank" rel="noopener">Telegram-канал «Темно-синий»</a>
+      </div>
     </div>
   </section>
 
