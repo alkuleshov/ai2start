@@ -4,10 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ai2start</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#1B1530">
 <link rel="preload" as="image" href="assets/candy/word-hero.webp" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900;1000&family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: candy world — every surface is glossy lacquered plastic, inflated, with a bright highlight on top; colour blobs float behind */
 :root{
@@ -51,6 +53,8 @@ select,label.check,a{cursor:pointer}
 
 /* ---------- section shell with colour blobs (glass needs something to refract) ---------- */
 .sec{position:relative;padding-block:64px 24px;isolation:isolate}
+/* секции ниже первого экрана не рисуются, пока до них не доскроллили */
+.sec ~ .sec{content-visibility:auto;contain-intrinsic-size:auto 900px}
 .sec::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:-1;pointer-events:none;
   background:radial-gradient(26vmax 20vmax at 12% 22%,var(--blob1),transparent 70%),radial-gradient(24vmax 18vmax at 88% 30%,var(--blob2),transparent 70%),radial-gradient(26vmax 18vmax at 60% 92%,var(--blob3),transparent 70%),radial-gradient(18vmax 14vmax at 30% 80%,var(--blob4),transparent 70%)}
 .sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:30px}
@@ -118,7 +122,8 @@ select,label.check,a{cursor:pointer}
 .plates [data-m="candy"] .surf::before,.plates [data-m="candy"] .surf::after{display:none}
 .plates [data-m="candy"] .surf[style*="--lime"],.plates .st2,.plates [data-m="candy"] .faq > div:nth-child(4){--plate:url(assets/candy/plate-lime.webp)}
 .plates [data-m="candy"] .surf[style*="--sky"],.plates .st1,.plates [data-m="candy"] .faq > div:nth-child(1){--plate:url(assets/candy/plate-sky.webp)}
-.plates [data-m="candy"] .surf[style*="--pink"],.plates [data-m="candy"] .course .l{--plate:url(assets/candy/plate-pink.webp)}
+.plates [data-m="candy"] .surf[style*="--pink"]{--plate:url(assets/candy/plate-pink.webp)}
+.plates [data-m="candy"] .course .l{--plate:url(assets/candy/plate-violet.webp)}
 .plates [data-m="candy"] .surf[style*="--orange"]{--plate:url(assets/candy/plate-orange.webp)}
 .plates [data-m="candy"] .surf[style*="--lilac"],.plates [data-m="candy"] .faq > div:nth-child(2){--plate:url(assets/candy/plate-lilac.webp)}
 .plates [data-m="candy"] .surf[style*="--blue"]{--plate:url(assets/candy/plate-lavender.webp)}
@@ -268,7 +273,9 @@ nav.links a:hover{background:var(--busy)}
 .card .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .card.flash{animation:flash 1.4s ease 2}
 @keyframes flash{50%{outline:5px solid var(--violet);outline-offset:6px}}
-.obj{position:absolute;z-index:3;top:-44px;right:-12px;width:118px;height:118px;pointer-events:none;filter:drop-shadow(0 14px 12px rgba(27,21,48,.3));animation:bob 5s ease-in-out infinite}
+.obj{position:absolute;z-index:3;top:-44px;right:-12px;width:118px;height:118px;pointer-events:none;filter:drop-shadow(0 14px 12px rgba(27,21,48,.3))}
+/* у карточек фигурка качается только под курсором: 30+ бесконечных анимаций тормозили телефоны */
+@media (hover:hover){.card:hover .obj,.course .obj{animation:bob 5s ease-in-out infinite}}
 .card.wide .obj{width:156px;height:156px;top:-60px}
 .obj img{width:100%;height:100%;display:block}
 .orb{display:block;width:72%;height:72%;margin:14%;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff 0 10%,rgba(255,255,255,.4) 22%,transparent 40%),radial-gradient(circle at 60% 75%,color-mix(in oklab,var(--c),#12062E 45%),var(--c) 65%)}
@@ -276,20 +283,22 @@ nav.links a:hover{background:var(--busy)}
 
 /* ---------- course ---------- */
 .course{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
-.course .l{--c:var(--pink);--t:#1B1530;padding:30px;display:flex;flex-direction:column;gap:16px;border-radius:36px}
+.course .l{--c:var(--violet);--t:#FFFFFF;padding:30px;display:flex;flex-direction:column;gap:16px;border-radius:36px}
 .course .l .puff{font-size:clamp(2.6rem,6vw,4.6rem)}
 .course .l .obj{top:-50px;right:-6px;width:150px;height:150px}
 .course .r{--c:var(--slab);--t:var(--fg);padding:28px;display:grid;gap:18px;align-content:start}
 .meet{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start}
-.meet .n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:1000;font-size:21px;color:#fff;text-shadow:0 1px 2px rgba(140,20,70,.45);
-  background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,.35) 22%,transparent 40%),radial-gradient(circle at 60% 78%,#C93478,#FF6FAF 62%,#FF9BCB 100%);
-  box-shadow:inset 0 -5px 8px rgba(120,10,60,.28),inset 0 2px 3px rgba(255,255,255,.6),0 8px 14px -6px rgba(200,40,110,.55)}
+.meet .n{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:1000;font-size:21px;color:#2A1460;text-shadow:0 1px 0 rgba(255,255,255,.5);
+  background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,.35) 22%,transparent 40%),radial-gradient(circle at 60% 78%,#E0A800,#FFD23F 62%,#FFE58A 100%);
+  box-shadow:inset 0 -5px 8px rgba(140,90,0,.28),inset 0 2px 3px rgba(255,255,255,.6),0 8px 14px -6px rgba(160,110,0,.5)}
+.meet span{opacity:.9}
 .meet b{display:block;font-size:17px}
 .meet span{opacity:.8;font-size:15px}
 .tiers{display:flex;flex-wrap:wrap;gap:10px}
 .tier{border-radius:16px;padding:10px 14px;background:rgba(255,255,255,.6);box-shadow:inset 0 1px 1px #fff,0 2px 6px rgba(0,0,0,.08)}
 .tier b{font-family:var(--font-mono);font-size:20px;display:block}
 .tier span{font-size:13px;font-weight:600}
+.course .l .tier{color:#1B1530;background:rgba(255,255,255,.88)}
 @media (max-width:860px){.course{grid-template-columns:1fr}}
 
 /* ---------- packs ---------- */
@@ -492,7 +501,7 @@ footer .links2 b{color:var(--fg)}
           <div class="tier"><b class="mono">4 990 ₽</b><span>Live + разбор ваших вопросов</span></div>
         </div>
         <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:auto">
-          <button class="btn btn-ink" data-book-stream="parents">Записаться на поток</button>
+          <button class="btn" data-book-stream="parents">Записаться на поток</button>
           <button class="btn btn-plain" data-banner="parents-course">Баннер курса</button>
         </div>
       </div>
@@ -622,8 +631,7 @@ const S = [
   {id:"plot",g:"space",t:"Проверка участка под дом",r:"Что можно строить, какие ограничения и риски у земли.",p:9900,time:"отчёт за 5 дней"},
   {id:"travel",g:"space",t:"Путешествие с ИИ",r:"Маршрут, бюджет, жильё и план на каждый день под вашу семью.",p:1990,time:"1 час онлайн"},
   {id:"neuro-photo",g:"fun",t:"Нейрофотосессия",r:"Портреты, аватарки и открытки по вашим фото: деловой стиль, сказка, семейная открытка.",p:1990,time:"1 час онлайн"},
-  {id:"revive-photo",g:"fun",t:"Оживить старое фото",r:"Реставрация семейного снимка и короткое видео из него.",p:1490,time:"1 час онлайн"},
-  {id:"song",g:"fun",t:"Песня в подарок",r:"Своя песня с именем и историями про человека: текст, музыка и обложка.",p:1990,time:"1 час онлайн"}
+  {id:"revive-photo",g:"fun",t:"Оживить старое фото",r:"Реставрация семейного снимка и короткое видео из него.",p:1490,time:"1 час онлайн"}
 ];
 const PACKS = [
   {t:"Старт с ИИ",items:["Доступ и оплата ChatGPT, Claude или Gemini","Настройка ИИ-ассистента"],p:4990,old:5980},
