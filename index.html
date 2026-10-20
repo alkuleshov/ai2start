@@ -228,8 +228,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;padding-b
   background:color-mix(in srgb,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);
   box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 0 0 1px color-mix(in srgb,var(--fg) 10%,transparent),0 12px 30px -14px rgba(30,15,80,.4)}
 .logo{font-family:var(--font-display);font-weight:1000;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo i{width:24px;height:24px;border-radius:50%;display:inline-block;box-shadow:inset 0 -3px 5px rgba(0,0,0,.25),inset 0 2px 3px rgba(255,255,255,.7);
-  background:radial-gradient(circle at 32% 28%,#fff 0 12%,transparent 30%),conic-gradient(from 30deg,var(--pink),var(--sun),var(--lime),var(--sky),var(--lilac),var(--pink))}
+.logo img{width:26px;height:26px;display:inline-block;filter:drop-shadow(0 2px 3px rgba(40,10,70,.25))}
 nav.links{display:flex;gap:4px;margin-left:auto}
 nav.links a{padding:8px 12px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px}
 nav.links a:hover{background:var(--busy)}
@@ -471,7 +470,7 @@ footer .links2 b{color:var(--fg)}
 <body>
 <header class="top">
   <div class="wrap bar">
-    <a class="logo" href="#top"><i></i>ai2start</a>
+    <a class="logo" href="#top"><img src="assets/candy/logo.webp" alt="" width="26" height="26">ai2start</a>
     <nav class="links" aria-label="Разделы">
       <a href="#services">Услуги</a><a href="#course">Курс</a><a href="#packs">Пакеты</a><a href="#schedule">Расписание</a><a href="#faq">Вопросы</a><a href="#support">Поддержка</a>
     </nav>
@@ -573,18 +572,18 @@ footer .links2 b{color:var(--fg)}
         <div>
           <span class="tag" style="align-self:flex-start">Кто ведёт встречи</span>
           <h3>Александр Кулешов</h3>
-          <p class="author-role">Наставник по нейросетям, автор и руководитель курсов лаборатории ai2arch</p>
+          <p class="author-role">Методолог EdTech-программ, дипломированный педагог высшей школы и ДПО, руководитель лаборатории ai2arch</p>
         </div>
       </div>
       <ul class="facts">
-        <li>Дипломированный преподаватель высшей школы и дополнительного образования (ЮФУ)</li>
-        <li>Автор курсов «ИИ в архитектуре» и «ИИ в редевелопменте» на базе ЮФУ: 16 ноября стартует третий поток</li>
-        <li>Читает приглашённые лекции о нейросетях в вузах, в том числе в РАНХиГС</li>
-        <li>Учит преподавателей распознавать тексты и работы, сделанные ИИ</li>
-        <li>15 лет практики в архитектуре и городских проектах, сооснователь креативного кластера С52 в Ростове-на-Дону</li>
-        <li>Папа двоих детей: всё, что советуем семьям, сначала проверяем дома</li>
+        <li>Профессиональная педагогическая квалификация (ЮФУ): дипломированный специалист в сфере высшего и дополнительного профессионального образования (программа «Педагогическая деятельность в системе ВО и ДПО», НОЦ «Перспективные решения в образовании»)</li>
+        <li>Мультивозрастная педагогика и инклюзия (ОВЗ): подтверждённая квалификация и практический опыт работы со всеми категориями учащихся — от детей (включая специализированные методики работы с детьми с ОВЗ) и студентов вузов до взрослых практикующих специалистов и топ-менеджеров (андрагогика)</li>
+        <li>Проектирование образовательных систем и EdTech-продуктов: автор и руководитель флагманских программ ДПО «ИИ в архитектуре» и «ИИ в редевелопменте» на базе ЮФУ (запущено 3 потока), методолог прикладных курсов на стыке нейросетей, ГИС и проектирования</li>
+        <li>Обучение преподавателей и академический консалтинг: приглашённый лектор ведущих вузов (включая Иннополис, ДГТУ, РАНХиГС и ЮФУ), автор методик для педагогического состава по интеграции ИИ в учебный процесс и верификации студенческих работ, сгенерированных нейросетями</li>
+        <li>Практический трекинг и наставничество: 15+ лет реальной практики в архитектуре и девелопменте (80+ проектов среды, сооснователь кластера С52), переложенные в формат проектного обучения (Project-Based Learning) и пошаговых пайплайнов</li>
+        <li>Семейная и прикладная оптика: отец двоих детей — все образовательные треки, игровые механики и навыки безопасной работы с ИИ для семей проходят личную валидацию на практике</li>
       </ul>
-      <p class="about-mp"><b>ai2start</b> — маркетплейс навыков работы с нейросетями. Встречи ведут Александр и эксперты по обучению: преподаватели курсов о нейросетях в креативных профессиях и практики, которые каждый день работают с ИИ и объясняют сложное простыми словами.</p>
+      <p class="about-mp"><b>ai2start</b> — маркетплейс прикладных навыков работы с нейросетями. Программы спроектированы профессиональными педагогами и методистами высшей школы: мы адаптируем сложные ИИ-технологии под особенности восприятия каждого — от ребёнка и студента до взрослого специалиста.</p>
       <div class="author-links">
         <a class="btn btn-plain btn-sm" href="https://ai2arch.ru" target="_blank" rel="noopener">Курсы ai2arch.ru</a>
         <a class="btn btn-plain btn-sm" href="https://ku1eshov.ru" target="_blank" rel="noopener">Личный сайт ku1eshov.ru</a>
@@ -595,7 +594,7 @@ footer .links2 b{color:var(--fg)}
 
   <footer data-m="candy">
     <div>
-      <a class="logo" href="#top"><i></i>ai2start</a>
+      <a class="logo" href="#top"><img src="assets/candy/logo.webp" alt="" width="26" height="26">ai2start</a>
       <p style="margin-top:12px;font-size:14px">Маркетплейс навыков работы с нейросетями.</p>
       <p style="margin-top:10px;font-size:13px;color:var(--muted)">© 2026 <a href="https://ku1eshov.ru" target="_blank" rel="noopener" style="color:inherit">Александр Кулешов</a></p>
     </div>
