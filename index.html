@@ -134,7 +134,7 @@ select,label.check,a{cursor:pointer}
 .plates [data-m="candy"] .course .l{--plate:url(assets/candy/plate-violet.webp)}
 .plates [data-m="candy"] .surf[style*="--orange"]{--plate:url(assets/candy/plate-orange.webp)}
 .plates [data-m="candy"] .surf[style*="--lilac"],.plates [data-m="candy"] .faq > div:nth-child(2){--plate:url(assets/candy/plate-lilac.webp)}
-.plates [data-m="candy"] .surf[style*="--blue"]{--plate:url(assets/candy/plate-lavender.webp)}
+.plates [data-m="candy"] :is(.surf[style*="--blue"],.surf[style*="--violet"]){--plate:url(assets/candy/plate-lavender.webp)}
 .plates [data-m="candy"] .surf[style*="--sun"],.plates .st3,.plates [data-m="candy"] .faq > div:nth-child(3){--plate:url(assets/candy/plate-sun.webp)}
 .plates [data-m="candy"] :is(.course .r,.pack,.panel,.sheet){--plate:url(assets/candy/plate-lavender.webp);--pw:40px}
 .plates [data-m="candy"] .pack.hot{--plate:url(assets/candy/plate-violet.webp)}
@@ -469,12 +469,12 @@ footer .links2 b{color:var(--fg)}
       <div>
         <span class="eyebrow chip">Нейросети для жизни, а не для галочки</span>
         <h1>Наведём <span class="puff has-img" id="hero-word" style="--c:var(--pink);filter:none"><img src="assets/candy/word-hero.webp" alt="порядок" width="1280" height="304" decoding="async" fetchpriority="high" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span> в жизни с нейросетями</h1>
-        <p class="lead">ChatGPT, Claude и Gemini, календарь всей семьи, почта, таблицы, бюджет и домашка. Настроим за вас за один созвон или научим делать самим.</p>
+        <p class="lead">ChatGPT, Claude и Gemini, календарь всей семьи, почта, таблицы, бюджет и домашка. Настроим за один созвон и объясним так, что дальше вы сами повторите весь путь, без второй встречи.</p>
         <div class="hero-cta">
           <a class="btn" href="#services">Выбрать задачу</a>
           <button class="btn btn-plain" data-goto="bots">ChatGPT, Claude, Gemini</button>
         </div>
-        <div class="trust"><span>Пароли остаются у вас</span><span>Оплата картой и СБП</span><span>Наставник по нейросетям</span></div>
+        <div class="trust"><span>Повторите всё сами, без второй встречи</span><span>Пароли остаются у вас</span><span>Оплата картой и СБП</span><span>Наставник по нейросетям</span></div>
       </div>
       <div class="board" id="board" aria-label="Примеры результата">
         <div class="sticker surf st1"><small>Почта · пример</small><b>Входящие под контролем</b><div class="delta"><s>4 812</s> → 0 непрочитанных</div></div>
@@ -491,7 +491,7 @@ footer .links2 b{color:var(--fg)}
   <section class="sec" id="services" data-sec="services" data-m="candy">
     <div class="sec-head">
       <h2><span class="puff has-img" data-word="tasks" style="--c:var(--sky);font-size:clamp(3rem,8vw,6rem);filter:none"><img src="assets/candy/word-tasks.webp" alt="задачи" width="960" height="257" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
-      <p>Что наведём в порядок. Кнопка со стрелкой собирает баннер для ленты, сторис и Telegram.</p>
+      <p>Что наведём в порядок. Объясняем так, что потом вы повторите всё сами. Кнопка со стрелкой собирает баннер для ленты, сторис и Telegram.</p>
     </div>
     <div class="chips" id="chips" role="group" aria-label="Фильтр услуг"></div>
     <div class="grid" id="grid"></div>
@@ -603,6 +603,7 @@ document.getElementById("support-link").href = `https://t.me/${SUPPORT_BOT}`;
 const STYLES = {candy:{n:1,name:"Карамель",d:"глянцевый лакированный надутый пластик"}};
 const GROUPS = {
   bots:{name:"Нейросети и агенты",c:"--lilac",hex:"#B29BFF"},
+  sites:{name:"Сайты",c:"--violet",hex:"#6A3DF0"},
   study:{name:"Учёба",c:"--lime",hex:"#B9EC4A"}, time:{name:"Время",c:"--sky",hex:"#5CC6FF"}, info:{name:"Информация",c:"--pink",hex:"#FF6FAF"},
   money:{name:"Деньги",c:"--orange",hex:"#FF8A3D"}, space:{name:"Дом и место",c:"--sun",hex:"#FFD23F"},
   fun:{name:"Творчество",c:"--blue",hex:"#2F6BFF"}
@@ -613,9 +614,11 @@ const S = [
   {id:"own-agent",g:"bots",t:"Свой ИИ-агент",r:"Агент с вашими инструкциями и файлами: разбор договоров, меню на неделю, помощник по работе.",p:4990,time:"1,5 часа"},
   {id:"automation",g:"bots",t:"Агент-автоматизация",r:"Нейросеть сама разбирает письма, заявки или таблицы и присылает итог в Telegram. Работает без вас.",p:9900,from:true,time:"от 3 часов"},
   {id:"deep-research",g:"bots",t:"Глубокое исследование",r:"Запускаем Deep Research: отчёт по любой теме с источниками за 10 минут вместо выходных.",p:1990,time:"1 час онлайн"},
-  {id:"vibe-site",g:"bots",t:"Сайт или приложение за вечер",r:"Лендинг, калькулятор или игра для ребёнка вместе с нейросетью, без программиста. Уходите с готовой ссылкой.",p:4990,time:"2 часа"},
   {id:"voice-ai",g:"bots",t:"ИИ-собеседник в телефоне",r:"Голосовой режим: практика английского, ответы на детские «почему», разбор фото на ходу.",p:1990,time:"1 час онлайн"},
   {id:"tg-bot",g:"bots",t:"Telegram-бот",r:"Запись, ответы на вопросы, сборы, напоминания. На шаблоне или под задачу.",p:14900,from:true,time:"от 5 часов"},
+  {id:"vibe-site",g:"sites",t:"Сайт за вечер вместе с нейросетью",r:"Собираем с нейросетью визитку, страницу мастера или кружка, приглашение. Публикуем бесплатно, уходите с рабочей ссылкой.",p:4990,time:"2 часа"},
+  {id:"site-launch",g:"sites",t:"Запуск сайта: домен, хостинг, HTTPS",r:"Покупка домена, DNS, бесплатный или платный хостинг, сертификат и почта на своём домене. Для сайта, который уже есть.",p:4990,time:"1,5–2 часа"},
+  {id:"site-turnkey",g:"sites",t:"Сайт с заявками под ключ",r:"Два варианта: сервер в РФ по 152-ФЗ с формами и оплатой или сайт, который стабильно открывается и в России, и за рубежом.",p:14900,from:true,time:"2–3 дня",wide:true},
   {id:"homework",g:"study",t:"Помощник по домашке",r:"ИИ-тьютор, который объясняет тему и задаёт вопросы, а не выдаёт ответ.",p:1990,time:"1 час онлайн"},
   {id:"exam-tutor",g:"study",t:"ИИ-репетитор к ОГЭ и ЕГЭ",r:"Тьютор по предмету + план подготовки по неделям.",p:3990,time:"1,5 часа"},
   {id:"second-brain",g:"study",t:"Второй мозг в NotebookLM",r:"Загружаете учебники, лекции или документы, нейросеть отвечает по ним, делает конспекты и аудиопересказ.",p:2490,time:"1 час онлайн"},
