@@ -238,11 +238,11 @@ nav.links a:hover{background:var(--busy)}
 /* ---------- hero ---------- */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
 .eyebrow{--c:var(--lime);--t:#1B1530;font-weight:800;font-size:clamp(11px,2.8vw,13px);letter-spacing:.06em;text-transform:uppercase;padding:7px 14px}
-.hero h1{font-size:clamp(2.2rem,5.4vw,4.2rem);margin-top:18px;display:grid;gap:.04em}
-.hero h1 .puff{font-size:clamp(3.6rem,10.5vw,8.2rem);margin-left:-.06em}
-.lead{font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--muted);max-width:52ch;margin-top:20px}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
-.trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.hero h1{font-size:clamp(2rem,4.2vw,3.4rem);margin-top:12px;display:grid;gap:.04em}
+.hero h1 .puff{font-size:clamp(3rem,7.8vw,6rem);margin-left:-.06em}
+.lead{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--muted);max-width:52ch;margin-top:12px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .trust :is(span,a){font-size:13px;font-weight:600;border:1.5px dashed var(--muted);border-radius:999px;padding:5px 11px;color:var(--muted)}
 .trust a{color:var(--fg);border-style:solid;text-decoration:none}
 .board{position:relative;min-height:440px}
@@ -1032,13 +1032,13 @@ let tt; function toast(m){ const el=$("#toast"); el.textContent=m; el.hidden=fal
 
 
 /* ---------- generated assets (assets/candy/*.webp): known files, used directly — no probing, no waiting ---------- */
-["bots","study","time","info","money","space"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
+["bots","study","time","info","money","space","fun"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
 fillObjs();
 {
     // [x%, y%, width%, tilt°, depth for parallax, behind stickers?]
     const spots = matchMedia("(max-width:900px)").matches
-      ? {info:[52,-10,24,-8,18,1],time:[78,-9,22,9,26,0],study:[78,22,21,-10,14,0],money:[-6,56,20,10,22,0],bots:[80,62,18,-5,30,0],space:[74,84,26,5,16,0]}
-      : {time:[74,-16,27,9,26,0],info:[46,-14,24,-8,18,1],study:[-14,26,27,-10,22,0],money:[-14,66,22,10,30,0],bots:[58,70,19,-5,34,0],space:[74,62,30,5,16,0]};
+      ? {info:[52,-10,24,-8,18,1],time:[78,-9,22,9,26,0],study:[78,22,21,-10,14,0],money:[-6,56,20,10,22,0],bots:[80,62,18,-5,30,0],space:[74,84,26,5,16,0],fun:[10,-4,19,16,20,1]}
+      : {time:[74,-16,27,9,26,0],info:[46,-14,24,-8,18,1],study:[-14,26,27,-10,22,0],money:[-14,66,22,10,30,0],bots:[58,70,19,-5,34,0],space:[74,62,30,5,16,0],fun:[16,-20,20,16,22,1]};
     const board=$("#board");
     const toys=[];
     Object.entries(spots).forEach(([g,[x,y,w,r,depth,back]],i)=>{ if(!ASSETS[g]) return; const d=document.createElement("span"); d.className="toy"+(back?" back":""); d.setAttribute("aria-hidden","true");
@@ -1068,15 +1068,19 @@ function init3D(){
     info:()=>{const g=new T.SphereGeometry(1,64,48); g.scale(1,.8,.74); return g},
     money:()=>{const g=new T.CylinderGeometry(.95,.95,.4,64,1); g.rotateX(Math.PI/2); return g},
     bots:starGeo,
-    space:()=>new T.ConeGeometry(.95,1.4,48)
+    space:()=>new T.ConeGeometry(.95,1.4,48),
+    sites:()=>{const g=new T.BoxGeometry(1.5,1,.26); return g},
+    fun:starGeo
   };
   const FACET = {
     study:()=>new T.IcosahedronGeometry(1,0), time:()=>new T.TorusGeometry(.72,.34,40,80),
     info:()=>{const g=new T.OctahedronGeometry(1,0);g.scale(.85,1.25,.85);return g},
     money:()=>{const g=new T.CylinderGeometry(.95,.95,.34,7,1);g.rotateX(Math.PI/2);return g},
-    bots:starGeo, space:()=>{const g=new T.ConeGeometry(1,1.45,4,1);g.translate(0,.1,0);return g}
+    bots:starGeo, space:()=>{const g=new T.ConeGeometry(1,1.45,4,1);g.translate(0,.1,0);return g},
+    sites:()=>{const g=new T.BoxGeometry(1.5,1,.26); return g},
+    fun:starGeo
   };
-  const ROT = {study:[.4,.5,0],time:[.9,.4,0],info:[.25,.6,.2],money:[-.45,.5,.15],bots:[.25,-.35,.1],space:[.18,.75,0]};
+  const ROT = {study:[.4,.5,0],time:[.9,.4,0],info:[.25,.6,.2],money:[-.45,.5,.15],bots:[.25,-.35,.1],space:[.18,.75,0],sites:[.3,.4,0],fun:[.2,-.3,.1]};
   const geo = (st,g) => (st==="holo"?FACET:SOFT)[g]();
   const mat = (st,g) => { const c=new T.Color(GROUPS[g].hex);
     switch(st){
