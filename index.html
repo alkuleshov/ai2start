@@ -209,6 +209,10 @@ select,label.check,a{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.plates [data-m="candy"] .card::after{transition:none}}
 /* plates rasterised per element into one bitmap, so squashing never opens seams between 9-slice pieces */
 .plates [data-m="candy"] .surf.bmp:not(.card):not(.rubber),.bmp:not(.card):not(.rubber){border-image:none!important;background:var(--bmp) 0 0/100% 100% no-repeat!important}
+/* лёгкое затухание в момент пересчёта плашки — скрывает даже миллисекундный скачок при смене превью на чёткую картинку */
+@keyframes plateSettle{from{opacity:.88}to{opacity:1}}
+.plates [data-m="candy"] .bmp{animation:plateSettle .22s ease both}
+@media (prefers-reduced-motion:reduce){.plates [data-m="candy"] .bmp{animation:none}}
 /* ---------- rubber plates: only the plate (::before) squashes and inflates; text and corner objects stay put ---------- */
 .plates [data-m="candy"] .rubber.bmp{background:none!important;border-image:none!important;box-shadow:none!important;filter:none!important}
 .plates [data-m="candy"] .rubber.bmp::before{display:block!important;content:""!important;position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;width:auto!important;height:auto!important;
