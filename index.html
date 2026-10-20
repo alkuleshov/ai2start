@@ -271,7 +271,9 @@ nav.links a:hover{background:var(--busy)}
 @keyframes run{to{transform:translateX(-50%)}}
 
 /* ---------- services ---------- */
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:46px}
+.chips{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:46px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips .chip{flex:0 0 auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:56px 22px}
 .grp-head{grid-column:1/-1;scroll-margin-top:110px}
 .grp-head:not(:first-child){margin-top:14px}
@@ -510,7 +512,7 @@ footer .links2 b{color:var(--fg)}
   <section class="sec" id="services" data-sec="services" data-m="candy">
     <div class="sec-head">
       <h2><span class="puff has-img" data-word="tasks" style="--c:var(--sky);font-size:clamp(3rem,8vw,6rem);filter:none"><img src="assets/candy/word-tasks.webp" alt="задачи" width="960" height="257" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
-      <p>Что наведём в порядок. Объясняем так, что потом вы повторите всё сами. Кнопка со стрелкой собирает баннер для ленты, сторис и Telegram.</p>
+      <p>Что приведём в порядок. Объясняем так, что потом вы повторите всё сами. Кнопка со стрелкой собирает баннер для ленты, сторис и Telegram.</p>
     </div>
     <div class="chips" id="chips" role="group" aria-label="Фильтр услуг"></div>
     <div class="grid" id="grid"></div>
