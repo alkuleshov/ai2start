@@ -270,6 +270,9 @@ nav.links a:hover{background:var(--busy)}
 /* ---------- services ---------- */
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:46px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:56px 22px}
+.grp-head{grid-column:1/-1;scroll-margin-top:110px}
+.grp-head:not(:first-child){margin-top:14px}
+.grp-head .eyebrow{display:inline-flex}
 .card{--t:#1B1530;display:flex;flex-direction:column;gap:12px;padding:22px 20px 20px;min-width:0;transition:transform .25s ease}
 
 .card.wide{grid-column:span 2}
@@ -697,27 +700,48 @@ function fillObjs(){ document.querySelectorAll("[data-obj]").forEach(el=>{ el.in
 const tickerWords = S.map(s=>s.t.replace(/[«»]/g,""));
 $("#ticker").innerHTML = [...tickerWords,...tickerWords].map(w=>`<span>${w}</span>`).join("");
 
-let filter = "all";
+let activeGroup = "all";
 function renderChips(){
   const all = [["all","Все",null],...Object.entries(GROUPS).map(([k,v])=>[k,v.name,v.c])];
-  $("#chips").innerHTML = all.map(([k,n,c])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${c?`<i style="--d:var(${c})"></i>`:""}${n}</button>`).join("");
+  $("#chips").innerHTML = all.map(([k,n,c])=>`<button class="chip" data-f="${k}" aria-pressed="${activeGroup===k}">${c?`<i style="--d:var(${c})"></i>`:""}${n}</button>`).join("");
 }
 function renderGrid(){
-  $("#grid").innerHTML = S.filter(s=>filter==="all"||s.g===filter).map(s=>`
-    <article class="card surf${s.wide?" wide":""}" id="${s.id}" style="--c:var(${GROUPS[s.g].c})">
-      <span class="obj" data-obj="${s.g}" aria-hidden="true"></span>
-      <div class="card-top"><span class="tag${s.soon?" soon":""}">${s.soon?"Скоро":GROUPS[s.g].name}</span></div>
-      <h3>${s.t}</h3><p>${s.r}</p>
-      <div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
-      <div class="row">${s.soon?`<button class="btn btn-sm" data-wait="${s.id}">Хочу первым</button>`:
-        s.stream?`<button class="btn btn-ink btn-sm" data-book-stream="${s.stream}">Записаться на поток</button>`:
-        `<button class="btn btn-ink btn-sm" data-pick="${s.id}">Выбрать окно</button>`}
-        <button class="btn btn-plain btn-sm icon-btn" data-banner="${s.id}" aria-label="Баннер и ссылка: ${s.t}">${shareIcon}</button></div>
-    </article>`).join("");
+  // Список разворачивается целиком, по группам — чипы наверху только переключают якорем, карточки не скрываются и не перестраиваются (без этого «перепекались» плашки и всё мерцало).
+  let html = "";
+  for(const [gk,gv] of Object.entries(GROUPS)){
+    const items = S.filter(s=>s.g===gk);
+    if(!items.length) continue;
+    html += `<div class="grp-head" id="grp-${gk}"><span class="eyebrow" style="--c:var(${gv.c})">${gv.name}</span></div>`;
+    html += items.map(s=>`
+      <article class="card surf${s.wide?" wide":""}" id="${s.id}" data-grp="${gk}" style="--c:var(${GROUPS[s.g].c})">
+        <span class="obj" data-obj="${s.g}" aria-hidden="true"></span>
+        <div class="card-top"><span class="tag${s.soon?" soon":""}">${s.soon?"Скоро":GROUPS[s.g].name}</span></div>
+        <h3>${s.t}</h3><p>${s.r}</p>
+        <div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
+        <div class="row">${s.soon?`<button class="btn btn-sm" data-wait="${s.id}">Хочу первым</button>`:
+          s.stream?`<button class="btn btn-ink btn-sm" data-book-stream="${s.stream}">Записаться на поток</button>`:
+          `<button class="btn btn-ink btn-sm" data-pick="${s.id}">Выбрать окно</button>`}
+          <button class="btn btn-plain btn-sm icon-btn" data-banner="${s.id}" aria-label="Баннер и ссылка: ${s.t}">${shareIcon}</button></div>
+      </article>`).join("");
+  }
+  $("#grid").innerHTML = html;
   fillObjs();
 }
 renderChips(); renderGrid();
-$("#chips").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(!b)return;filter=b.dataset.f;renderChips();renderGrid();});
+$("#chips").addEventListener("click",e=>{
+  const b=e.target.closest("[data-f]"); if(!b) return;
+  const k=b.dataset.f; activeGroup=k; renderChips();
+  const t = k==="all" ? $("#services") : document.getElementById("grp-"+k);
+  if(t) t.scrollIntoView({behavior:"smooth",block:"start"});
+});
+/* чип подсвечивается по группе, которая сейчас на экране — без перестройки списка */
+const grpSpy = new IntersectionObserver(es=>{
+  const vis = es.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+  if(!vis) return;
+  const k = vis.target.id.replace("grp-","");
+  if(k!==activeGroup){ activeGroup=k; renderChips(); }
+},{rootMargin:"-120px 0px -70% 0px"});
+document.querySelectorAll(".grp-head").forEach(el=>grpSpy.observe(el));
 
 $("#packs-list").innerHTML = PACKS.map((k,i)=>`
   <div class="pack surf${k.hot?" hot":""}">
