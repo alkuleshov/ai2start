@@ -121,6 +121,7 @@ select,label.check,a{cursor:pointer}
 .plates [data-m="candy"] .surf[style*="--pink"],.plates [data-m="candy"] .course .l{--plate:url(assets/candy/plate-pink.webp)}
 .plates [data-m="candy"] .surf[style*="--orange"]{--plate:url(assets/candy/plate-orange.webp)}
 .plates [data-m="candy"] .surf[style*="--lilac"],.plates [data-m="candy"] .faq > div:nth-child(2){--plate:url(assets/candy/plate-lilac.webp)}
+.plates [data-m="candy"] .surf[style*="--blue"]{--plate:url(assets/candy/plate-lavender.webp)}
 .plates [data-m="candy"] .surf[style*="--sun"],.plates .st3,.plates [data-m="candy"] .faq > div:nth-child(3){--plate:url(assets/candy/plate-sun.webp)}
 .plates [data-m="candy"] :is(.course .r,.pack,.panel,.sheet){--plate:url(assets/candy/plate-lavender.webp);--pw:40px}
 .plates [data-m="candy"] .pack.hot{--plate:url(assets/candy/plate-violet.webp)}
@@ -451,10 +452,10 @@ footer .links2 b{color:var(--fg)}
       <div>
         <span class="eyebrow chip">Нейросети для жизни, а не для галочки</span>
         <h1>Наведём <span class="puff has-img" id="hero-word" style="--c:var(--pink);filter:none"><img src="assets/candy/word-hero.webp" alt="порядок" width="1280" height="304" decoding="async" fetchpriority="high" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span> в жизни с нейросетями</h1>
-        <p class="lead">Календарь всей семьи, почта, таблицы, бюджет и домашка. Настроим за вас за один созвон или научим делать самим.</p>
+        <p class="lead">ChatGPT, Claude и Gemini, календарь всей семьи, почта, таблицы, бюджет и домашка. Настроим за вас за один созвон или научим делать самим.</p>
         <div class="hero-cta">
           <a class="btn" href="#services">Выбрать задачу</a>
-          <a class="btn btn-plain" href="#course">Курс «ИИ для родителей»</a>
+          <button class="btn btn-plain" data-goto="bots">ChatGPT, Claude, Gemini</button>
         </div>
         <div class="trust"><span>Пароли остаются у вас</span><span>Оплата картой и СБП</span><span>Наставник по нейросетям</span></div>
       </div>
@@ -584,33 +585,48 @@ const SUPPORT_BOT = "ai2start_bot"; // имя бота поддержки в Tel
 document.getElementById("support-link").href = `https://t.me/${SUPPORT_BOT}`;
 const STYLES = {candy:{n:1,name:"Карамель",d:"глянцевый лакированный надутый пластик"}};
 const GROUPS = {
+  bots:{name:"Нейросети и агенты",c:"--lilac",hex:"#B29BFF"},
   study:{name:"Учёба",c:"--lime",hex:"#B9EC4A"}, time:{name:"Время",c:"--sky",hex:"#5CC6FF"}, info:{name:"Информация",c:"--pink",hex:"#FF6FAF"},
-  money:{name:"Деньги",c:"--orange",hex:"#FF8A3D"}, bots:{name:"Боты",c:"--lilac",hex:"#B29BFF"}, space:{name:"Дом и место",c:"--sun",hex:"#FFD23F"}
+  money:{name:"Деньги",c:"--orange",hex:"#FF8A3D"}, space:{name:"Дом и место",c:"--sun",hex:"#FFD23F"},
+  fun:{name:"Творчество",c:"--blue",hex:"#2F6BFF"}
 };
 const S = [
-  {id:"parents-course",g:"study",t:"Курс «ИИ для родителей»",r:"3 встречи: учёба ребёнка, быт семьи, безопасность. Запись или live с разбором.",p:2990,time:"3 встречи",wide:true,stream:"parents"},
+  {id:"ai-access",g:"bots",t:"ChatGPT, Claude и Gemini: доступ и оплата",r:"Аккаунт, почта и способ оплаты подписки из России. Подскажем, какая нейросеть подойдёт под ваши задачи.",p:2990,time:"1 час онлайн",wide:true},
+  {id:"ai-setup",g:"bots",t:"Настройка ИИ-ассистента",r:"ChatGPT, Claude или Gemini: проекты, память, инструкции и база знаний под ваши задачи.",p:2990,from:true,time:"1–2 часа"},
+  {id:"own-agent",g:"bots",t:"Свой ИИ-агент",r:"Агент с вашими инструкциями и файлами: разбор договоров, меню на неделю, помощник по работе.",p:4990,time:"1,5 часа"},
+  {id:"automation",g:"bots",t:"Агент-автоматизация",r:"Нейросеть сама разбирает письма, заявки или таблицы и присылает итог в Telegram. Работает без вас.",p:9900,from:true,time:"от 3 часов"},
+  {id:"deep-research",g:"bots",t:"Глубокое исследование",r:"Запускаем Deep Research: отчёт по любой теме с источниками за 10 минут вместо выходных.",p:1990,time:"1 час онлайн"},
+  {id:"vibe-site",g:"bots",t:"Сайт или приложение за вечер",r:"Лендинг, калькулятор или игра для ребёнка вместе с нейросетью, без программиста. Уходите с готовой ссылкой.",p:4990,time:"2 часа"},
+  {id:"voice-ai",g:"bots",t:"ИИ-собеседник в телефоне",r:"Голосовой режим: практика английского, ответы на детские «почему», разбор фото на ходу.",p:1990,time:"1 час онлайн"},
+  {id:"tg-bot",g:"bots",t:"Telegram-бот",r:"Запись, ответы на вопросы, сборы, напоминания. На шаблоне или под задачу.",p:14900,from:true,time:"от 5 часов"},
   {id:"homework",g:"study",t:"Помощник по домашке",r:"ИИ-тьютор, который объясняет тему и задаёт вопросы, а не выдаёт ответ.",p:1990,time:"1 час онлайн"},
   {id:"exam-tutor",g:"study",t:"ИИ-репетитор к ОГЭ и ЕГЭ",r:"Тьютор по предмету + план подготовки по неделям.",p:3990,time:"1,5 часа"},
+  {id:"second-brain",g:"study",t:"Второй мозг в NotebookLM",r:"Загружаете учебники, лекции или документы, нейросеть отвечает по ним, делает конспекты и аудиопересказ.",p:2490,time:"1 час онлайн"},
+  {id:"parents-course",g:"study",t:"Курс «ИИ для родителей»",r:"3 встречи: учёба ребёнка, быт семьи, безопасность. Запись или live с разбором.",p:2990,time:"3 встречи",stream:"parents"},
   {id:"family-intensive",g:"study",t:"Интенсив «Родитель + ребёнок»",r:"Проходите вместе и договариваетесь о правилах работы с ИИ дома.",p:5990,time:"2 встречи",stream:"family"},
   {id:"calendar",g:"time",t:"Настройка календаря",r:"Все дела, лекции и тренировки в одном месте, с напоминаниями.",p:2490,time:"1 час онлайн"},
   {id:"family-sync",g:"time",t:"Синхронизация семьи",r:"Общие календари, напоминания и списки покупок на всех телефонах.",p:3990,time:"1,5 часа"},
-  {id:"voice-planner",g:"time",t:"Бот «голос → календарь»",r:"Наговорили задачу в Telegram, она уже в календаре.",p:390,per:"/мес",time:"подписка",soon:true},
+  {id:"voice-planner",g:"time",t:"Бот «голос → календарь»",r:"Наговорили задачу в Telegram, она уже в календаре iCloud. Сейчас в бета-тесте.",p:150,per:"/мес",time:"подписка",soon:true},
   {id:"mail",g:"info",t:"Расчистка почты",r:"Отписки, фильтры, папки. Во входящих только то, что требует ответа.",p:3990,time:"1,5 часа"},
   {id:"mail-pro",g:"info",t:"Почта PRO",r:"Расчистка + шаблоны ответов и ежедневный ИИ-дайджест писем.",p:6990,time:"2,5 часа"},
   {id:"meetings",g:"info",t:"Саммари встреч",r:"Транскрипция созвонов и протокол с решениями по шаблону.",p:2990,time:"1 час онлайн"},
   {id:"style",g:"info",t:"Тексты в вашем стиле",r:"Профиль стиля по 10–20 вашим текстам: письма звучат как вы.",p:2490,time:"1 час онлайн"},
-  {id:"ai-setup",g:"info",t:"Настройка ИИ-ассистента",r:"Проекты, память, инструкции и база знаний под ваши задачи.",p:2990,from:true,time:"1–2 часа"},
+  {id:"job-search",g:"money",t:"Резюме и собеседование с ИИ",r:"Резюме под вакансию, сопроводительное письмо и тренировка собеседования голосом.",p:2490,time:"1,5 часа"},
+  {id:"marketplace",g:"money",t:"Карточки для маркетплейсов",r:"Тексты, фото товара на красивом фоне и инфографика для WB и Ozon.",p:3990,from:true,time:"1,5 часа"},
   {id:"budget",g:"money",t:"Семейный бюджет",r:"Шаблон, категории и ИИ-разбор трат раз в месяц.",p:2990,time:"1 час онлайн"},
   {id:"committee",g:"money",t:"Бюджет родкомитета",r:"Таблица сборов и готовый отчёт для чата класса.",p:1990,time:"30 минут"},
   {id:"excel",g:"money",t:"Порядок в таблицах",r:"Аудит, единая структура, формулы и сводные по вашим Excel.",p:7900,from:true,time:"3–6 часов"},
   {id:"subscriptions",g:"money",t:"Аудит подписок",r:"Находим забытые списания и отключаем лишнее.",p:1990,time:"1 час онлайн"},
-  {id:"tg-bot",g:"bots",t:"Telegram-бот",r:"Запись, ответы на вопросы, сборы, напоминания. На шаблоне или под задачу.",p:14900,from:true,time:"от 5 часов"},
   {id:"district",g:"space",t:"Проверка района",r:"Перед покупкой или арендой: шум, школы, транспорт, будущая застройка на карте.",p:7900,time:"отчёт за 3 дня",wide:true},
   {id:"renovation",g:"space",t:"Ремонт по фото",r:"3–5 вариантов интерьера по фото вашей комнаты + список материалов.",p:4990,time:"2 дня"},
-  {id:"plot",g:"space",t:"Проверка участка под дом",r:"Что можно строить, какие ограничения и риски у земли.",p:9900,time:"отчёт за 5 дней"}
+  {id:"plot",g:"space",t:"Проверка участка под дом",r:"Что можно строить, какие ограничения и риски у земли.",p:9900,time:"отчёт за 5 дней"},
+  {id:"travel",g:"space",t:"Путешествие с ИИ",r:"Маршрут, бюджет, жильё и план на каждый день под вашу семью.",p:1990,time:"1 час онлайн"},
+  {id:"neuro-photo",g:"fun",t:"Нейрофотосессия",r:"Портреты, аватарки и открытки по вашим фото: деловой стиль, сказка, семейная открытка.",p:1990,time:"1 час онлайн"},
+  {id:"revive-photo",g:"fun",t:"Оживить старое фото",r:"Реставрация семейного снимка и короткое видео из него.",p:1490,time:"1 час онлайн"},
+  {id:"song",g:"fun",t:"Песня в подарок",r:"Своя песня с именем и историями про человека: текст, музыка и обложка.",p:1990,time:"1 час онлайн"}
 ];
 const PACKS = [
-  {t:"Старт с ИИ",items:["Курс «ИИ для родителей»","Настройка одного ИИ-ассистента"],p:4990,old:5980},
+  {t:"Старт с ИИ",items:["Доступ и оплата ChatGPT, Claude или Gemini","Настройка ИИ-ассистента"],p:4990,old:5980},
   {t:"Семейный порядок",items:["Настройка календаря","Синхронизация семьи","Расчистка почты","Семейный бюджет"],p:9900,old:13460,hot:true},
   {t:"Порядок в работе",items:["Почта PRO","Порядок в таблицах","Саммари встреч","Тексты в вашем стиле"],p:17900,old:20370}
 ];
@@ -825,6 +841,7 @@ document.addEventListener("click",e=>{
   const t = e.target.closest("button,[data-close]"); if(!t) return;
   if(t.dataset.close){ closeOverlay(t.dataset.close); return; }
   if(t.dataset.pay){ goPay(t.dataset.pay, t); return; }
+  if(t.dataset.goto){ filter=t.dataset.goto; renderChips(); renderGrid(); fillObjs(); $("#services").scrollIntoView({behavior:reduced?"auto":"smooth"}); return; }
   if(t.dataset.pick){ svcSel.value=t.dataset.pick; shownDays=10; loadSlots(true); $("#schedule").scrollIntoView({behavior:reduced?"auto":"smooth"}); toast("Выберите свободное окно"); return; }
   if(t.dataset.pack!==undefined){ svcSel.value="pack-"+t.dataset.pack; shownDays=10; loadSlots(true); $("#schedule").scrollIntoView({behavior:reduced?"auto":"smooth"}); toast("Пакет выбран, осталось окно"); return; }
   if(t.dataset.slot){ startBooking({kind:"slot", svc:svcSel.value, when:slotLabel(t.dataset.slot), slot:t.dataset.slot}); return; }
@@ -905,7 +922,7 @@ let tt; function toast(m){ const el=$("#toast"); el.textContent=m; el.hidden=fal
 
 
 /* ---------- generated assets (assets/candy/*.webp): known files, used directly — no probing, no waiting ---------- */
-Object.keys(GROUPS).forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
+["bots","study","time","info","money","space"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
 fillObjs();
 {
     // [x%, y%, width%, tilt°, depth for parallax, behind stickers?]
