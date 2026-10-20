@@ -9,6 +9,14 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#1B1530">
 <link rel="preload" as="image" href="assets/candy/word-hero.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/candy/plate-lavender.webp">
+<link rel="preload" as="image" href="assets/candy/plate-lilac.webp">
+<link rel="preload" as="image" href="assets/candy/plate-lime.webp">
+<link rel="preload" as="image" href="assets/candy/plate-orange.webp">
+<link rel="preload" as="image" href="assets/candy/plate-pink.webp">
+<link rel="preload" as="image" href="assets/candy/plate-sky.webp">
+<link rel="preload" as="image" href="assets/candy/plate-sun.webp">
+<link rel="preload" as="image" href="assets/candy/plate-violet.webp">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: candy world — every surface is glossy lacquered plastic, inflated, with a bright highlight on top; colour blobs float behind */
@@ -493,7 +501,7 @@ footer .links2 b{color:var(--fg)}
     <div class="course">
       <div class="l surf">
         <span class="obj" data-obj="study" aria-hidden="true"></span>
-        <span class="tag" style="align-self:flex-start">Курс · 3 встречи</span>
+        <span class="tag soon" style="align-self:flex-start">Курс · 3 встречи · скоро</span>
         <h2><span class="puff has-img" data-word="parents" style="--c:#FFFFFF;filter:none"><img src="assets/candy/word-parents.webp" alt="ИИ для родителей" width="960" height="163" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
         <p style="font-size:18px;max-width:40ch">Как нейросети помогают ребёнку учиться, а семье — жить спокойнее. Без программирования и без страшилок.</p>
         <div class="tiers">
@@ -501,7 +509,7 @@ footer .links2 b{color:var(--fg)}
           <div class="tier"><b class="mono">4 990 ₽</b><span>Live + разбор ваших вопросов</span></div>
         </div>
         <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:auto">
-          <button class="btn" data-book-stream="parents">Записаться на поток</button>
+          <button class="btn" data-wait="parents-course">Хочу первым</button>
           <button class="btn btn-plain" data-banner="parents-course">Баннер курса</button>
         </div>
       </div>
@@ -611,8 +619,8 @@ const S = [
   {id:"homework",g:"study",t:"Помощник по домашке",r:"ИИ-тьютор, который объясняет тему и задаёт вопросы, а не выдаёт ответ.",p:1990,time:"1 час онлайн"},
   {id:"exam-tutor",g:"study",t:"ИИ-репетитор к ОГЭ и ЕГЭ",r:"Тьютор по предмету + план подготовки по неделям.",p:3990,time:"1,5 часа"},
   {id:"second-brain",g:"study",t:"Второй мозг в NotebookLM",r:"Загружаете учебники, лекции или документы, нейросеть отвечает по ним, делает конспекты и аудиопересказ.",p:2490,time:"1 час онлайн"},
-  {id:"parents-course",g:"study",t:"Курс «ИИ для родителей»",r:"3 встречи: учёба ребёнка, быт семьи, безопасность. Запись или live с разбором.",p:2990,time:"3 встречи",stream:"parents"},
-  {id:"family-intensive",g:"study",t:"Интенсив «Родитель + ребёнок»",r:"Проходите вместе и договариваетесь о правилах работы с ИИ дома.",p:5990,time:"2 встречи",stream:"family"},
+  {id:"parents-course",g:"study",t:"Курс «ИИ для родителей»",r:"3 встречи: учёба ребёнка, быт семьи, безопасность. Запись или live с разбором.",p:2990,time:"3 встречи",stream:"parents",soon:true},
+  {id:"family-intensive",g:"study",t:"Интенсив «Родитель + ребёнок»",r:"Проходите вместе и договариваетесь о правилах работы с ИИ дома.",p:5990,time:"2 встречи",stream:"family",soon:true},
   {id:"calendar",g:"time",t:"Настройка календаря",r:"Все дела, лекции и тренировки в одном месте, с напоминаниями.",p:2490,time:"1 час онлайн"},
   {id:"family-sync",g:"time",t:"Синхронизация семьи",r:"Общие календари, напоминания и списки покупок на всех телефонах.",p:3990,time:"1,5 часа"},
   {id:"voice-planner",g:"time",t:"Бот «голос → календарь»",r:"Наговорили задачу в Telegram, она уже в календаре iCloud. Сейчас в бета-тесте.",p:150,per:"/мес",time:"подписка",soon:true},
@@ -904,7 +912,9 @@ document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{
   }
   let queued=new Set(), raf=0;
   const ro=new ResizeObserver(es=>{ es.forEach(e=>queued.add(e.target)); if(!raf) raf=requestAnimationFrame(()=>{ raf=0; const q=[...queued]; queued.clear(); q.forEach(bake); }); });
-  const watch=()=>document.querySelectorAll(SEL).forEach(el=>{ if(!el.dataset.bmpWatch){ el.dataset.bmpWatch=1; ro.observe(el); } });
+  /* печём плашку только когда элемент рядом с экраном: раньше все 40+ плашек кодировались в PNG сразу при загрузке */
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ io.unobserve(e.target); ro.observe(e.target); } }),{rootMargin:"600px 0px"});
+  const watch=()=>document.querySelectorAll(SEL).forEach(el=>{ if(!el.dataset.bmpWatch){ el.dataset.bmpWatch=1; io.observe(el); } });
   watch(); new MutationObserver(watch).observe(document.body,{childList:true,subtree:true});
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>document.querySelectorAll(".bmp").forEach(el=>{ delete el.dataset.bmpKey; bake(el); }));
 })();
