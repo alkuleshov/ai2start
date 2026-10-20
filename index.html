@@ -126,7 +126,7 @@ select,label.check,a{cursor:pointer}
 #hero-word.has-img img{display:block;width:min(100%,640px);height:auto;aspect-ratio:1280/304;filter:drop-shadow(0 14px 14px rgba(150,40,20,.25))}
 
 /* ---------- generated candy plates (9-slice, active once assets/candy/ exists): corners and seam stay intact, only the middle stretches ---------- */
-.plates [data-m="candy"] .surf{--pw:34px;background:none!important;box-shadow:none!important;border:0 solid transparent;
+.plates [data-m="candy"] .surf{--pw:34px;background:var(--c,#2A2245)!important;box-shadow:none!important;border:0 solid transparent;
   border-image:var(--plate) 66 fill / var(--pw) stretch;filter:drop-shadow(0 14px 14px rgba(40,10,70,.22))}
 .plates [data-m="candy"] .surf::before,.plates [data-m="candy"] .surf::after{display:none}
 .plates [data-m="candy"] .surf[style*="--lime"],.plates .st2,.plates [data-m="candy"] .faq > div:nth-child(4){--plate:url(assets/candy/plate-lime.webp)}
@@ -202,7 +202,7 @@ select,label.check,a{cursor:pointer}
 .course .l [data-word].has-img img{height:auto;width:min(100%,460px)}
 /* ---------- service cards: plate drawn on ::before so the whole card can squash like rubber ---------- */
 .plates [data-m="candy"] .card{border-image:none!important;filter:none!important}
-.plates [data-m="candy"] .card::before{display:block!important;content:"";position:absolute;top:0;left:0;right:0;bottom:0;width:auto;height:auto;background:none;box-shadow:none;z-index:0;border:0 solid transparent;border-radius:0;
+.plates [data-m="candy"] .card::before{display:block!important;content:"";position:absolute;top:0;left:0;right:0;bottom:0;width:auto;height:auto;background:var(--c,#2A2245);box-shadow:none;z-index:0;border:0 solid transparent;border-radius:30px;
   border-image:var(--plate) 66 fill / var(--pw) stretch;filter:drop-shadow(0 14px 14px rgba(40,10,70,.22));transition:opacity .3s ease,filter .3s ease}
 .plates [data-m="candy"] .card > *{z-index:1}
 .plates [data-m="candy"] .card .obj{z-index:3}
@@ -271,7 +271,8 @@ nav.links a:hover{background:var(--busy)}
 @keyframes run{to{transform:translateX(-50%)}}
 
 /* ---------- services ---------- */
-.chips{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:46px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.chips{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:46px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;padding-right:28px;
+  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 36px),transparent)}
 .chips::-webkit-scrollbar{display:none}
 .chips .chip{flex:0 0 auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:56px 22px}
