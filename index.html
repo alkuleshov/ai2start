@@ -1009,8 +1009,16 @@ document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{
     try{ cv.toBlob(bl=>{ if(!bl) return; const u=URL.createObjectURL(bl); const old=el.dataset.bmpUrl; el.style.setProperty("--bmp",`url("${u}")`);
       el.dataset.bmpUrl=u; el.dataset.bmpKey=key; el.classList.add("bmp"); if(old) setTimeout(()=>URL.revokeObjectURL(old),1000); },"image/png"); }catch(_){}
   }
-  let queued=new Set(), raf=0;
-  const ro=new ResizeObserver(es=>{ es.forEach(e=>queued.add(e.target)); if(!raf) raf=requestAnimationFrame(()=>{ raf=0; const q=[...queued]; queued.clear(); q.forEach(bake); }); });
+  /* печём максимум по 2 плашки за кадр: при быстром скролле в зону попадают сразу десятки карточек,
+     и если печь их все в одном requestAnimationFrame — главный поток подвисает и видно рывок/мерцание */
+  let queued=[], raf=0;
+  function drain(){
+    raf=0;
+    const batch=queued.splice(0,2);
+    batch.forEach(bake);
+    if(queued.length) raf=requestAnimationFrame(drain);
+  }
+  const ro=new ResizeObserver(es=>{ es.forEach(e=>{ if(!queued.includes(e.target)) queued.push(e.target); }); if(!raf) raf=requestAnimationFrame(drain); });
   /* печём плашку только когда элемент рядом с экраном: раньше все 40+ плашек кодировались в PNG сразу при загрузке */
   const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ io.unobserve(e.target); ro.observe(e.target); } }),{rootMargin:"600px 0px"});
   const watch=()=>document.querySelectorAll(SEL).forEach(el=>{ if(!el.dataset.bmpWatch){ el.dataset.bmpWatch=1; io.observe(el); } });
