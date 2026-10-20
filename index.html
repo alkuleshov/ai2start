@@ -312,6 +312,13 @@ nav.links a:hover{background:var(--busy)}
 .pick label{font-weight:700;font-size:14px}
 select,input[type=text],input[type=email]{font:inherit;color:var(--fg);background:var(--bg);border:0;border-radius:14px;padding:11px 13px;min-width:0;max-width:100%;
   box-shadow:inset 0 2px 5px rgba(0,0,0,.14),inset 0 0 0 1.5px color-mix(in srgb,var(--fg) 14%,transparent)}
+select{-webkit-appearance:none;appearance:none;padding-right:46px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 24px) 52%,calc(100% - 18px) 52%;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+select::-ms-expand{display:none}
+select:focus-visible{outline:3px solid color-mix(in srgb,var(--fg) 45%,transparent);outline-offset:2px}
+.pick select{flex:1 1 260px;max-width:460px}
+@media (max-width:560px){.pick select{flex-basis:100%;max-width:100%}}
 .days{overflow-x:auto;padding:4px 4px 12px}
 .days-in{display:grid;grid-template-columns:repeat(10,minmax(96px,1fr));gap:12px;min-width:1020px}
 .day h4{margin:0 0 8px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.75}
@@ -502,7 +509,7 @@ footer .links2 b{color:var(--fg)}
   </section>
 
   <section class="sec" id="schedule" data-sec="schedule" data-m="candy">
-    <div class="sec-head"><h2><span class="puff has-img" data-word="slots" style="--c:var(--orange);font-size:clamp(3rem,8vw,6rem);filter:none"><img src="assets/candy/word-slots.webp" alt="окна" width="960" height="342" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2><p>Выберите задачу и время. Запись подтверждается оплатой и сразу попадает в календарь.</p></div>
+    <div class="sec-head"><h2><span class="puff has-img" data-word="slots" style="--c:var(--orange);font-size:clamp(3rem,8vw,6rem);filter:none"><img src="assets/candy/word-slots.webp" alt="окна" width="960" height="342" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2><p>Выберите задачу и время и оставьте заявку. Мы подтвердим окно в течение суток и пришлём ссылку на оплату.</p></div>
     <div class="sched">
       <div class="panel surf">
         <div class="pick"><label for="svc">Задача</label><select id="svc"></select></div>
@@ -520,7 +527,7 @@ footer .links2 b{color:var(--fg)}
     <div class="faq">
       <div class="surf"><b>Нужно давать пароли?</b><p>Нет. Работаем по демонстрации экрана: вы вводите пароли сами, мы подсказываем и настраиваем.</p></div>
       <div class="surf"><b>Кто проводит встречи?</b><p>Эксперты и преподаватели курсов дополнительного образования в сфере ИИ: дипломированные педагоги и практики, которые каждый день сами работают с нейросетями. Видеозвонок на 1–2 часа, после него — короткая инструкция, что и где настроено.</p></div>
-      <div class="surf"><b>Как оплатить?</b><p>Картой или через СБП при записи. Чек приходит на почту.</p></div>
+      <div class="surf"><b>Как оплатить?</b><p>После того как мы подтвердим время, на почту придёт ссылка на оплату картой или через СБП. До подтверждения платить ничего не нужно. Чек приходит на почту.</p></div>
       <div class="surf"><b>А если не подойдёт время?</b><p>Перенести встречу можно один раз, если написать за сутки.</p></div>
     </div>
   </section>
@@ -741,11 +748,12 @@ function renderBookForm(){
     ${it.from?`<p class="note">Сейчас оплачивается базовая стоимость. Если задача окажется объёмнее, согласуем доплату до встречи.</p>`:""}
     <form id="book-form" novalidate style="display:grid;gap:14px">
       <div class="field"><label for="f-name">Как к вам обращаться</label><input type="text" id="f-name" autocomplete="name" placeholder="Имя"></div>
-      <div class="field"><label for="f-email">Электронная почта</label><input type="email" id="f-email" autocomplete="email" inputmode="email" placeholder="name@example.com"><small class="note" style="display:block;margin-top:4px">На неё придут чек, подтверждение и ссылка на встречу.</small></div>
+      <div class="field"><label for="f-email">Электронная почта</label><input type="email" id="f-email" autocomplete="email" inputmode="email" placeholder="name@example.com"><small class="note" style="display:block;margin-top:4px">${booking.kind==="slot"?"На неё придут подтверждение, ссылка на оплату и ссылка на встречу.":"На неё придут чек и подтверждение."}</small></div>
       <div class="field"><label for="f-contact">Telegram или телефон (по желанию)</label><input type="text" id="f-contact" autocomplete="tel" placeholder="@username или +7…"></div>
       <label class="check"><input type="checkbox" id="f-consent"> <span>Согласен на обработку персональных данных (<a href="privacy.html" target="_blank" rel="noopener">политика</a>) и с <a href="oferta.html" target="_blank" rel="noopener">офертой</a></span></label>
       <p class="err" id="f-err" hidden></p>
-      <div><button class="btn" type="submit" id="f-submit">К оплате · ${it.price}</button></div>
+      ${booking.kind==="slot"?`<p class="note">Сейчас платить не нужно. Мы проверим, что время свободно, и в течение суток пришлём ссылку на оплату. Окно держим за вами.</p>`:""}
+      <div><button class="btn" type="submit" id="f-submit">${booking.kind==="slot"?"Отправить заявку":"К оплате · "+it.price}</button></div>
     </form>`;
   $("#f-name").focus();
 }
@@ -762,23 +770,52 @@ function renderDone(info){
       <p class="hint">Подтверждение отправили на вашу почту. Чек пришлёт ЮKassa отдельным письмом. Перенести встречу можно через ${supportLink}.</p>
       <button class="btn" data-close="book">Отлично</button></div>`;
 }
+function renderRequested(d){
+  $("#book-sheet").innerHTML = `
+    <div class="done"><div class="big">✓</div><h3 id="book-title">Заявка отправлена</h3>
+      <p>${esc(d.title)}<br><span class="mono">${esc(d.when)}</span></p>
+      <p class="hint">Подтвердим до ${esc(d.until)} и пришлём на почту ссылку на оплату. Окно держим за вами, платить пока ничего не нужно.</p>
+      <button class="btn" data-close="book">Понятно</button></div>`;
+}
+function renderPay(id, d, lead){
+  $("#book-sheet").innerHTML = `
+    <div class="sheet-head"><h3 id="book-title">Время подтверждено</h3>${closeBtn}</div>
+    <div class="summary"><span>${esc(d.title)}</span><span>${esc(d.when)}</span><span>${rub(d.amount)}</span></div>
+    <p>${lead||`Окно держим за вами до ${esc(d.until)}. Оплатите картой или через СБП, чек придёт на почту.`}</p>
+    <p class="err" id="pay-err" hidden></p>
+    <div><button class="btn" data-pay="${esc(id)}">Оплатить · ${rub(d.amount)}</button></div>`;
+}
+async function goPay(id, btn){
+  const err=$("#pay-err"), label=btn.textContent; btn.disabled=true; btn.textContent="Открываем оплату…";
+  try{ const d = await api("/api/booking/"+encodeURIComponent(id)+"/pay",{method:"POST", body:"{}"}); location.href=d.confirmation_url; }
+  catch(ex){ err.textContent=ex.message; err.hidden=false; btn.disabled=false; btn.textContent=label; }
+}
 function startBooking(b){ booking=b; renderBookForm(); openOverlay("book"); }
 
-/* возвращение с оплаты: ?booking=ID */
+/* ссылка ?booking=ID: статус заявки; &pay=1 — из письма «оплатите»; без pay — возврат с ЮKassa */
 async function checkReturn(){
-  const id = new URLSearchParams(location.search).get("booking"); if(!id || !/^[A-Za-z0-9_-]{6,64}$/.test(id)) return;
+  const q = new URLSearchParams(location.search), id = q.get("booking"), wantPay = q.get("pay")==="1";
+  if(!id || !/^[A-Za-z0-9_-]{6,64}$/.test(id)) return;
   history.replaceState(null,"",location.pathname+location.hash);
-  $("#book-sheet").innerHTML = `<div class="sheet-head"><h3 id="book-title">Проверяем оплату</h3>${closeBtn}</div><p>Подождите несколько секунд…</p>`;
+  $("#book-sheet").innerHTML = `<div class="sheet-head"><h3 id="book-title">Проверяем запись</h3>${closeBtn}</div><p>Подождите несколько секунд…</p>`;
   openOverlay("book");
-  for(let i=0;i<40;i++){
-    try{
-      const d = await api("/api/booking/"+encodeURIComponent(id));
-      if(d.status==="paid"){ renderDone(d); confetti(); loadSlots(true); return; }
-      if(d.status==="paid_conflict"){ renderMsg("Нужна помощь", `Оплата прошла, но это время только что заняли. Напишите в ${supportLink}: подберём другое время или вернём деньги.`); return; }
-      if(d.status!=="pending"){ renderMsg("Оплата не прошла", `Окно освобождено, деньги не списаны. Выберите время и попробуйте ещё раз. Если с карты всё же списали, напишите в ${supportLink}.`); loadSlots(true); return; }
-    }catch(e){ if(e.status===404){ renderMsg("Запись не найдена", `Проверьте ссылку или напишите в ${supportLink}.`); return; } }
-    await new Promise(r=>setTimeout(r,3000));
+  const tries = wantPay ? 1 : 30;
+  let d = null;
+  for(let i=0;i<tries;i++){
+    try{ d = await api("/api/booking/"+encodeURIComponent(id)); }
+    catch(e){ if(e.status===404){ renderMsg("Запись не найдена", `Проверьте ссылку или напишите в ${supportLink}.`); return; } d=null; }
+    if(d && d.status!=="pending") break;
+    if(d && d.status==="pending" && wantPay) break;
+    if(i<tries-1) await new Promise(r=>setTimeout(r,3000));
   }
+  if(d && d.when) d.when = d.when.charAt(0).toUpperCase()+d.when.slice(1);
+  if(!d){ renderMsg("Нет связи", `Не получилось проверить запись. Обновите страницу чуть позже или напишите в ${supportLink}.`); return; }
+  if(d.status==="paid"){ renderDone(d); confetti(); loadSlots(true); return; }
+  if(d.status==="requested"){ renderMsg("Заявка ждёт подтверждения", `${esc(d.title)}, ${esc(d.when)}. Подтвердим до ${esc(d.until)}, после этого на почту придёт ссылка на оплату.`); return; }
+  if(d.status==="paid_conflict"){ renderMsg("Нужна помощь", `Оплата прошла, но это время только что заняли. Напишите в ${supportLink}: подберём другое время или вернём деньги.`); return; }
+  if(d.status==="declined"){ renderMsg("Это время не получилось", `Мы написали вам на почту. Выберите другое окно в расписании или напишите в ${supportLink}.`); loadSlots(true); return; }
+  if(d.status==="expired"){ renderMsg("Срок истёк", `Окно освободилось, деньги не списывались. Выберите время заново или напишите в ${supportLink}.`); loadSlots(true); return; }
+  if(d.kind==="slot"){ renderPay(id, d, wantPay ? "" : `Оплата пока не подтвердилась. Если вы уже заплатили, подождите пару минут: подтверждение придёт на почту. Если нет, попробуйте ещё раз. Окно держим до ${esc(d.until)}.`); return; }
   renderMsg("Ждём подтверждение банка", `Платёж ещё обрабатывается. Как только он пройдёт, на почту придёт подтверждение. Если письма нет в течение часа, напишите в ${supportLink}.`);
 }
 
@@ -787,6 +824,7 @@ document.addEventListener("click",e=>{
   if(!e.target.closest("button,a,[data-close]")){ const card=e.target.closest(".card"); if(card){ const main=card.querySelector("[data-pick],[data-book-stream],[data-wait]"); if(main) main.click(); return; } }
   const t = e.target.closest("button,[data-close]"); if(!t) return;
   if(t.dataset.close){ closeOverlay(t.dataset.close); return; }
+  if(t.dataset.pay){ goPay(t.dataset.pay, t); return; }
   if(t.dataset.pick){ svcSel.value=t.dataset.pick; shownDays=10; loadSlots(true); $("#schedule").scrollIntoView({behavior:reduced?"auto":"smooth"}); toast("Выберите свободное окно"); return; }
   if(t.dataset.pack!==undefined){ svcSel.value="pack-"+t.dataset.pack; shownDays=10; loadSlots(true); $("#schedule").scrollIntoView({behavior:reduced?"auto":"smooth"}); toast("Пакет выбран, осталось окно"); return; }
   if(t.dataset.slot){ startBooking({kind:"slot", svc:svcSel.value, when:slotLabel(t.dataset.slot), slot:t.dataset.slot}); return; }
@@ -803,12 +841,13 @@ document.addEventListener("submit",async e=>{
   const name=$("#f-name").value.trim(), email=$("#f-email").value.trim(), c=$("#f-contact").value.trim(), ok=$("#f-consent").checked, err=$("#f-err"), btn=$("#f-submit");
   const msg = !name?"Напишите, как к вам обращаться.":!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)?"Проверьте адрес почты: на него придут чек и ссылка на встречу.":!ok?"Отметьте согласие на обработку данных.":"";
   if(msg){ err.textContent=msg; err.hidden=false; return; }
-  err.hidden=true; btn.disabled=true; const label=btn.textContent; btn.textContent="Создаём платёж…";
+  err.hidden=true; btn.disabled=true; const label=btn.textContent; btn.textContent = booking.kind==="slot" ? "Отправляем заявку…" : "Создаём платёж…";
   try{
     const body = booking.kind==="stream"
       ? {kind:"stream", service:booking.svc, stream:booking.stream, name, email, contact:c, consent:true}
       : {kind:"slot", service:booking.svc, slot:booking.slot, name, email, contact:c, consent:true};
     const d = await api("/api/book",{method:"POST", body:JSON.stringify(body)});
+    if(d.status==="requested"){ renderRequested({title:itemFor(booking.svc).t, when:booking.when, until:d.answer_until}); loadSlots(true); return; }
     location.href = d.confirmation_url;
   }catch(ex){
     err.textContent = ex.message; err.hidden=false; btn.disabled=false; btn.textContent=label;
