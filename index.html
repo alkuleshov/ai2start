@@ -107,10 +107,9 @@ select,label.check,a{cursor:pointer}
 
 /* ---------- CANDY — glossy lacquered inflated plastic ---------- */
 [data-m="candy"] .surf{
-  background:radial-gradient(120% 70% at 30% 0%,color-mix(in oklab,var(--c),white 55%) 0%,transparent 55%),linear-gradient(180deg,color-mix(in oklab,var(--c),white 15%),var(--c) 45%,var(--lo));
-  box-shadow:inset 0 8px 14px rgba(255,255,255,.55),inset 0 -14px 24px color-mix(in oklab,var(--c),#2a0030 38%),inset 0 0 0 1px rgba(255,255,255,.35),0 22px 34px -14px color-mix(in oklab,var(--c),#2a0040 60%)}
-[data-m="candy"] .surf::before{top:10px;left:22px;width:42%;height:20px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));filter:blur(.5px)}
-[data-m="candy"] .surf::after{top:14px;right:26px;width:12px;height:12px;background:rgba(255,255,255,.85);box-shadow:-14px 6px 0 -3px rgba(255,255,255,.6)}
+  background:linear-gradient(180deg,color-mix(in oklab,var(--c),white 10%),var(--c) 55%,var(--lo));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -10px 18px color-mix(in oklab,var(--c),#1a0020 30%),0 16px 28px -16px color-mix(in oklab,var(--c),#1a0020 55%)}
+[data-m="candy"] .surf::before,[data-m="candy"] .surf::after{display:none}
 [data-m="candy"] :is(.btn,.chip,.slot){
   background:radial-gradient(120% 90% at 50% 0%,color-mix(in oklab,var(--c),white 50%) 0%,transparent 60%),linear-gradient(180deg,var(--c),var(--lo));
   box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px color-mix(in oklab,var(--c),#200028 35%),0 10px 16px -8px color-mix(in oklab,var(--c),#200040 60%)}
@@ -543,7 +542,7 @@ footer .links2 b{color:var(--fg)}
       <div class="l surf">
         <span class="obj" data-obj="study" aria-hidden="true"></span>
         <span class="tag soon" style="align-self:flex-start">Курс · 3 встречи · скоро</span>
-        <h2><span class="puff has-img" data-word="parents" style="--c:#FFFFFF;filter:none"><img src="assets/candy/word-parents.webp" alt="ИИ для родителей" width="960" height="163" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
+        <h2><span class="puff has-img" data-word="parents" style="--c:#FFFFFF;filter:none"><img src="assets/candy/word-parents.webp" alt="ИИ для родителей" width="960" height="310" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
         <p style="font-size:18px;max-width:40ch">Как нейросети помогают ребёнку учиться, а семье — жить спокойнее. Без программирования и без страшилок.</p>
         <div class="tiers">
           <div class="tier"><b class="mono">2 990 ₽</b><span>Запись + гайд</span></div>
