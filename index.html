@@ -283,6 +283,15 @@ nav.links a:hover{background:var(--busy)}
 
 .card.wide{grid-column:span 2}
 @media (max-width:640px){.card.wide{grid-column:auto}}
+@media (max-width:640px){
+  .grid{gap:30px 16px}
+  .card{padding:16px 14px 14px;gap:8px}
+  .obj{width:84px;height:84px;top:-30px;right:-8px}
+  .card.wide .obj{width:100px;height:100px;top:-36px}
+  .card h3{font-size:18px;padding-right:46px}
+  .card.wide h3{font-size:20px;padding-right:60px}
+  .card p{font-size:13.5px}
+}
 .card-top{display:flex;align-items:center;gap:8px;min-height:30px}
 .card h3{font-size:22px;padding-right:72px}
 .card.wide h3{font-size:clamp(24px,3vw,32px);padding-right:110px}
@@ -332,6 +341,16 @@ nav.links a:hover{background:var(--busy)}
 .pack .pp b{font-family:var(--font-mono);font-size:28px}
 .pack .pp s{font-family:var(--font-mono);opacity:.65}
 .save{align-self:flex-start;color:#1B1530;border-radius:999px;font-size:12px;font-weight:800;padding:4px 11px;background:linear-gradient(180deg,#FFD0E6,#FF6FAF);box-shadow:inset 0 1px 1px #fff}
+/* на телефоне пакеты были высокими на весь экран — одна плашка и больше ничего не видно за раз.
+   плотнее паддинги и шрифты, чтобы следующая карточка хоть немного попадала в кадр */
+@media (max-width:640px){
+  .packs{gap:18px}
+  .pack{padding:18px 16px;gap:10px}
+  .pack h3{font-size:19px}
+  .pack ul{gap:6px}
+  .pack li{font-size:14px}
+  .pack .pp b{font-size:22px}
+}
 
 /* ---------- schedule ---------- */
 .sched{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
