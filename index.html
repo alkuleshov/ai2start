@@ -283,10 +283,10 @@ nav.links a:hover{background:var(--busy)}
 .card.wide{grid-column:span 2}
 @media (max-width:640px){.card.wide{grid-column:auto}}
 @media (max-width:640px){
-  .grid{gap:30px 16px}
+  .grid{gap:48px 16px;padding-inline:6px}
   .card{padding:16px 14px 14px;gap:8px}
-  .obj{width:84px;height:84px;top:-30px;right:-8px}
-  .card.wide .obj{width:100px;height:100px;top:-36px}
+  .obj{width:74px;height:74px;top:-22px;right:-6px}
+  .card.wide .obj{width:86px;height:86px;top:-24px}
   .card h3{font-size:18px;padding-right:46px}
   .card.wide h3{font-size:20px;padding-right:60px}
   .card p{font-size:13.5px}
@@ -1064,13 +1064,13 @@ let tt; function toast(m){ const el=$("#toast"); el.textContent=m; el.hidden=fal
 
 
 /* ---------- generated assets (assets/candy/*.webp): known files, used directly — no probing, no waiting ---------- */
-["bots","sites","study","time","info","money","space","fun"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
+["bots","sites","study","time","info","fun"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
 fillObjs();
 {
     // [x%, y%, width%, tilt°, depth for parallax, behind stickers?]
     const spots = matchMedia("(max-width:900px)").matches
-      ? {info:[52,-10,24,-8,18,1],time:[78,-9,22,9,26,0],study:[78,22,21,-10,14,0],money:[-6,56,20,10,22,0],bots:[80,62,18,-5,30,0],space:[74,84,26,5,16,0],fun:[10,-4,19,16,20,1]}
-      : {time:[74,-16,27,9,26,0],info:[46,-14,24,-8,18,1],study:[-14,26,27,-10,22,0],money:[-14,66,22,10,30,0],bots:[58,70,19,-5,34,0],space:[74,62,30,5,16,0],fun:[16,-20,20,16,22,1]};
+      ? {info:[52,-10,24,-8,18,1],time:[78,-9,22,9,26,0],study:[78,22,21,-10,14,0],bots:[80,62,18,-5,30,0],fun:[10,-4,19,16,20,1]}
+      : {time:[74,-16,27,9,26,0],info:[46,-14,24,-8,18,1],study:[-14,26,27,-10,22,0],bots:[58,70,19,-5,34,0],fun:[16,-20,20,16,22,1]};
     const board=$("#board");
     const toys=[];
     Object.entries(spots).forEach(([g,[x,y,w,r,depth,back]],i)=>{ if(!ASSETS[g]) return; const d=document.createElement("span"); d.className="toy"+(back?" back":""); d.setAttribute("aria-hidden","true");
