@@ -107,23 +107,40 @@ select,label.check,a{cursor:pointer}
 
 /* ---------- CANDY — glossy lacquered inflated plastic ---------- */
 [data-m="candy"] .surf{
-  background:var(--c);
-  box-shadow:inset 0 -8px 14px -6px color-mix(in oklab,var(--c),#120826 24%),0 14px 24px -16px rgba(8,4,24,.65)}
+  /* «резиновая» подушка: матовый цвет, но с объёмом — мягкий свет сверху-слева, затемнённый низ, светлый кант; без белых полос и без прозрачности */
+  background:
+    radial-gradient(120% 75% at 22% 0%,color-mix(in oklab,var(--c),white 24%) 0%,transparent 62%),
+    linear-gradient(180deg,color-mix(in oklab,var(--c),white 7%) 0%,var(--c) 48%,color-mix(in oklab,var(--c),#120826 16%) 100%);
+  box-shadow:
+    inset 0 3px 2px -1px color-mix(in oklab,var(--c),white 42%),
+    inset 0 -14px 20px -6px color-mix(in oklab,var(--c),#120826 34%),
+    inset 0 0 0 1px color-mix(in oklab,var(--c),white 12%),
+    0 18px 28px -16px rgba(8,4,24,.75)}
 [data-m="candy"] .surf::before,[data-m="candy"] .surf::after{display:none}
-/* кнопки/чипы/слоты: матовая глина — плоская заливка, нижний «борт», никаких бликов; ширина тянется по тексту */
+/* кнопки/чипы/слоты: та же резина в малом масштабе — объёмная таблетка, мягкий блик внутри, ширина тянется по тексту */
 [data-m="candy"] :is(.btn,.chip,.slot){
-  background:var(--c);
-  box-shadow:inset 0 -3px 0 color-mix(in oklab,var(--c),#120826 24%),0 6px 12px -7px rgba(8,4,24,.55)}
+  background:
+    radial-gradient(90% 70% at 50% 0%,color-mix(in oklab,var(--c),white 30%) 0%,transparent 70%),
+    linear-gradient(180deg,color-mix(in oklab,var(--c),white 10%) 0%,var(--c) 52%,color-mix(in oklab,var(--c),#120826 20%) 100%);
+  box-shadow:
+    inset 0 2px 1px -1px color-mix(in oklab,var(--c),white 55%),
+    inset 0 -5px 7px -2px color-mix(in oklab,var(--c),#120826 38%),
+    inset 0 0 0 1px color-mix(in oklab,var(--c),white 10%),
+    0 8px 12px -6px rgba(8,4,24,.6)}
 [data-m="candy"] :is(.btn,.chip,.slot)::before,[data-m="candy"] :is(.btn,.chip,.slot)::after{display:none}
-/* главная кнопка записи: тёмные чернила на цветной карточке — читается как действие */
-[data-m="candy"] .card .btn-ink{--c:#1B1530;--t:#fff}
-[data-m="candy"] .pack:not(.hot) .btn-ink{--c:var(--violet);--t:#fff}
-[data-m="candy"] .card .btn-plain{--c:rgba(255,255,255,0);--t:#1B1530;box-shadow:inset 0 0 0 2px rgba(27,21,48,.55)}
-/* цена — это не кнопка: просто крупный текст, без заливки */
+/* главная кнопка записи: тёмная резина на цветной карточке — читается как действие */
+[data-m="candy"] .card .btn-ink{--c:#241A47;--t:#fff}
+/* второстепенная (поделиться): светлая круглая резина в тон карточки */
+[data-m="candy"] .card .btn-plain{--c:color-mix(in oklab,var(--card-c,#fff),white 58%);--t:#1B1530}
+/* цена — не кнопка: крупный текст без заливки */
 [data-m="candy"] .card .pill{background:none;box-shadow:none;border:0;padding:0;border-radius:0;color:var(--t);font-size:26px;line-height:1}
-[data-m="candy"] .tag{background:color-mix(in oklab,var(--c,#fff),white 62%);box-shadow:none}
-[data-m="candy"] .tag.soon{background:#1B1530}
-[data-m="candy"] .tier,[data-m="candy"] .course .l .tier{background:#F6F3FF;box-shadow:none}
+[data-m="candy"] .tag{background:color-mix(in oklab,var(--c,#fff),white 62%);box-shadow:inset 0 -2px 3px -1px color-mix(in oklab,var(--c,#fff),#120826 20%)}
+[data-m="candy"] .tag.soon{background:#1B1530;box-shadow:none}
+[data-m="candy"] .tier,[data-m="candy"] .course .l .tier{background:#F6F3FF;box-shadow:inset 0 -3px 4px -1px rgba(60,40,120,.18)}
+/* категория в плашке не должна заезжать под фигурку: отступ справа = выступ иконки, длинный текст переносится */
+.card-top{padding-right:94px}
+.card.wide .card-top{padding-right:130px}
+.card-top .tag{white-space:normal;line-height:1.25}
 [data-m="candy"] .puff{filter:url(#f-candy)}
 
 [data-m="candy"] :is(.course .r,.pack,.panel,.sheet){--t:#1B1530}
@@ -292,18 +309,10 @@ nav.links a:hover{background:var(--busy)}
 
 .card.wide{grid-column:span 2}
 @media (max-width:640px){.card.wide{grid-column:auto}}
-@media (max-width:640px){
-  .grid{gap:48px 16px;padding-inline:6px}
-  .card{padding:16px 14px 14px;gap:8px}
-  .obj{width:74px;height:74px;top:-22px;right:-6px}
-  .card.wide .obj{width:86px;height:86px;top:-24px}
-  .card h3{font-size:18px;padding-right:46px}
-  .card.wide h3{font-size:20px;padding-right:60px}
-  .card p{font-size:13.5px}
 }
 .card-top{display:flex;align-items:center;gap:8px;min-height:30px}
-.card h3{font-size:22px;padding-right:72px}
-.card.wide h3{font-size:clamp(24px,3vw,32px);padding-right:110px}
+.card h3{font-size:22px;padding-right:92px}
+.card.wide h3{font-size:clamp(24px,3vw,32px);padding-right:132px}
 .card p{font-size:15px;line-height:1.45}
 .card .meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:auto;padding-top:6px}
 .time{font-size:13px;font-weight:700;opacity:.85}
@@ -317,6 +326,18 @@ nav.links a:hover{background:var(--busy)}
 .obj img{width:100%;height:100%;display:block}
 .orb{display:block;width:72%;height:72%;margin:14%;border-radius:50%;background:radial-gradient(circle at 32% 26%,#fff 0 10%,rgba(255,255,255,.4) 22%,transparent 40%),radial-gradient(circle at 60% 75%,color-mix(in oklab,var(--c),#12062E 45%),var(--c) 65%)}
 @keyframes bob{50%{translate:0 -6px;rotate:4deg}}
+/* мобильные размеры карточек: идут ПОСЛЕ базовых правил, иначе базовые их перебивают (раньше шрифты/иконки на телефоне не уменьшались) */
+@media (max-width:640px){
+  .grid{gap:48px 16px;padding-inline:6px}
+  .card{padding:16px 14px 14px;gap:8px}
+  .obj{width:84px;height:84px;top:-26px;right:-6px}
+  .card.wide .obj{width:96px;height:96px;top:-28px}
+  .card h3{font-size:18px;padding-right:66px}
+  .card.wide h3{font-size:20px;padding-right:78px}
+  .card p{font-size:13.5px}
+  .card-top{padding-right:68px}
+  .card.wide .card-top{padding-right:80px}
+}
 
 /* ---------- course ---------- */
 .course{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
@@ -740,6 +761,8 @@ function renderChips(){
   const all = [["all","Все",null],...Object.entries(GROUPS).map(([k,v])=>[k,v.name,v.c])];
   $("#chips").innerHTML = all.map(([k,n,c])=>`<button class="chip" data-f="${k}" aria-pressed="${activeGroup===k}">${c?`<i style="--d:var(${c})"></i>`:""}${n}</button>`).join("");
 }
+// длинные слова в заголовках карточек переносим по слогам, чтобы не заезжали под фигурку
+const hy = t => t.replace("Синхронизация","Синхрони\u00ADзация").replace("Нейрофотосессия","Нейрофото\u00ADсессия");
 function renderGrid(){
   // Список разворачивается целиком, по группам — чипы наверху только переключают якорем, карточки не скрываются и не перестраиваются (без этого «перепекались» плашки и всё мерцало).
   let html = "";
@@ -748,10 +771,10 @@ function renderGrid(){
     if(!items.length) continue;
     html += `<div class="grp-head" id="grp-${gk}"><span class="eyebrow" style="--c:var(${gv.c})">${gv.name}</span></div>`;
     html += items.map(s=>`
-      <article class="card surf${s.wide?" wide":""}" id="${s.id}" data-grp="${gk}" style="--c:var(${GROUPS[s.g].c})">
+      <article class="card surf${s.wide?" wide":""}" id="${s.id}" data-grp="${gk}" style="--c:var(${GROUPS[s.g].c});--card-c:var(${GROUPS[s.g].c})">
         <span class="obj" data-obj="${s.g}" aria-hidden="true"></span>
         <div class="card-top"><span class="tag${s.soon?" soon":""}">${s.soon?"Скоро":GROUPS[s.g].name}</span></div>
-        <h3>${s.t}</h3><p>${s.r}</p>
+        <h3>${hy(s.t)}</h3><p>${s.r}</p>
         <div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
         <div class="row">${s.soon?`<button class="btn btn-sm" data-wait="${s.id}">Хочу первым</button>`:
           s.stream?`<button class="btn btn-ink btn-sm" data-book-stream="${s.stream}">Записаться на поток</button>`:
@@ -1075,7 +1098,7 @@ let tt; function toast(m){ const el=$("#toast"); el.textContent=m; el.hidden=fal
 
 
 /* ---------- generated assets (assets/candy/*.webp): known files, used directly — no probing, no waiting ---------- */
-["bots","sites","study","time","info","fun","course"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
+["bots","sites","study","time","info","fun","course"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp?v=4`; });
 fillObjs();
 {
     // [x%, y%, width%, tilt°, depth for parallax, behind stickers?]
