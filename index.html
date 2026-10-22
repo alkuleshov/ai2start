@@ -23,7 +23,7 @@
 /* Layout: candy world — every surface is glossy lacquered plastic, inflated, with a bright highlight on top; colour blobs float behind */
 :root{
   --bg:#F5F2FB; --fg:#1B1530; --muted:#5B5378; --slab:#FFFFFF; --ink:#1B1530;
-  --lime:#B9EC4A; --sky:#5CC6FF; --pink:#FF6FAF; --orange:#FF8A3D; --lilac:#B29BFF; --sun:#FFD23F; --violet:#6A3DF0; --blue:#2F6BFF;
+  --lime:#B9EC4A; --sky:#5CC6FF; --pink:#FF6FAF; --orange:#FF8A3D; --lilac:#B29BFF; --sun:#FFD23F; --violet:#6A3DF0; --blue:#2F6BFF; --mint:#3FCFA8;
   --busy:#E7E1F4; --busy-fg:#6E6690; --err:#C21C61; --scrim:rgba(18,13,34,.55);
   --blob1:rgba(255,111,175,.38); --blob2:rgba(92,198,255,.40); --blob3:rgba(185,236,74,.36); --blob4:rgba(178,155,255,.40);
   --font-display:"Nunito","Arial Rounded MT Bold","Arial Black",system-ui,sans-serif;
@@ -33,12 +33,12 @@
 @media (color-gamut: p3){:root{--lime:color(display-p3 .76 .93 .36); --sky:color(display-p3 .42 .77 1); --pink:color(display-p3 1 .44 .69); --orange:color(display-p3 1 .55 .27); --sun:color(display-p3 1 .83 .30)}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#120D22; --fg:#EFEAFB; --muted:#B4AAD6; --slab:#2A2245;
-  --lime:#A4D445; --sky:#53B3E6; --pink:#E86BA2; --orange:#E5823F; --lilac:#9E8AE6; --sun:#E6BD40; --violet:#7C55FF; --blue:#4A7DFF;
+  --lime:#A4D445; --sky:#53B3E6; --pink:#E86BA2; --orange:#E5823F; --lilac:#9E8AE6; --sun:#E6BD40; --violet:#7C55FF; --blue:#4A7DFF; --mint:#3FBE9A;
   --busy:#2A2245; --busy-fg:#9C93C2; --err:#FF7AB0; --scrim:rgba(0,0,0,.6);
   --blob1:rgba(232,107,162,.18); --blob2:rgba(83,179,230,.16); --blob3:rgba(164,212,69,.12); --blob4:rgba(124,85,255,.22); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#120D22; --fg:#EFEAFB; --muted:#B4AAD6; --slab:#2A2245;
-  --lime:#A4D445; --sky:#53B3E6; --pink:#E86BA2; --orange:#E5823F; --lilac:#9E8AE6; --sun:#E6BD40; --violet:#7C55FF; --blue:#4A7DFF;
+  --lime:#A4D445; --sky:#53B3E6; --pink:#E86BA2; --orange:#E5823F; --lilac:#9E8AE6; --sun:#E6BD40; --violet:#7C55FF; --blue:#4A7DFF; --mint:#3FBE9A;
   --busy:#2A2245; --busy-fg:#9C93C2; --err:#FF7AB0; --scrim:rgba(0,0,0,.6);
   --blob1:rgba(232,107,162,.18); --blob2:rgba(83,179,230,.16); --blob3:rgba(164,212,69,.12); --blob4:rgba(124,85,255,.22); color-scheme:dark}
 
@@ -107,13 +107,23 @@ select,label.check,a{cursor:pointer}
 
 /* ---------- CANDY — glossy lacquered inflated plastic ---------- */
 [data-m="candy"] .surf{
-  background:linear-gradient(180deg,color-mix(in oklab,var(--c),white 10%),var(--c) 55%,var(--lo));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -10px 18px color-mix(in oklab,var(--c),#1a0020 30%),0 16px 28px -16px color-mix(in oklab,var(--c),#1a0020 55%)}
+  background:var(--c);
+  box-shadow:inset 0 -8px 14px -6px color-mix(in oklab,var(--c),#120826 24%),0 14px 24px -16px rgba(8,4,24,.65)}
 [data-m="candy"] .surf::before,[data-m="candy"] .surf::after{display:none}
+/* кнопки/чипы/слоты: матовая глина — плоская заливка, нижний «борт», никаких бликов; ширина тянется по тексту */
 [data-m="candy"] :is(.btn,.chip,.slot){
-  background:radial-gradient(120% 90% at 50% 0%,color-mix(in oklab,var(--c),white 50%) 0%,transparent 60%),linear-gradient(180deg,var(--c),var(--lo));
-  box-shadow:inset 0 3px 4px rgba(255,255,255,.6),inset 0 -5px 8px color-mix(in oklab,var(--c),#200028 35%),0 10px 16px -8px color-mix(in oklab,var(--c),#200040 60%)}
-[data-m="candy"] :is(.btn,.chip,.slot)::before{inset:3px 14% auto 14%;height:38%;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0));z-index:-1}
+  background:var(--c);
+  box-shadow:inset 0 -3px 0 color-mix(in oklab,var(--c),#120826 24%),0 6px 12px -7px rgba(8,4,24,.55)}
+[data-m="candy"] :is(.btn,.chip,.slot)::before,[data-m="candy"] :is(.btn,.chip,.slot)::after{display:none}
+/* главная кнопка записи: тёмные чернила на цветной карточке — читается как действие */
+[data-m="candy"] .card .btn-ink{--c:#1B1530;--t:#fff}
+[data-m="candy"] .pack:not(.hot) .btn-ink{--c:var(--violet);--t:#fff}
+[data-m="candy"] .card .btn-plain{--c:rgba(255,255,255,0);--t:#1B1530;box-shadow:inset 0 0 0 2px rgba(27,21,48,.55)}
+/* цена — это не кнопка: просто крупный текст, без заливки */
+[data-m="candy"] .card .pill{background:none;box-shadow:none;border:0;padding:0;border-radius:0;color:var(--t);font-size:26px;line-height:1}
+[data-m="candy"] .tag{background:color-mix(in oklab,var(--c,#fff),white 62%);box-shadow:none}
+[data-m="candy"] .tag.soon{background:#1B1530}
+[data-m="candy"] .tier,[data-m="candy"] .course .l .tier{background:#F6F3FF;box-shadow:none}
 [data-m="candy"] .puff{filter:url(#f-candy)}
 
 [data-m="candy"] :is(.course .r,.pack,.panel,.sheet){--t:#1B1530}
@@ -327,6 +337,7 @@ nav.links a:hover{background:var(--busy)}
 .tier span{font-size:13px;font-weight:600}
 .course .l .tier{color:#1B1530;background:rgba(255,255,255,.88)}
 @media (max-width:860px){.course{grid-template-columns:1fr}}
+@media (max-width:640px){.course .l .obj{top:-30px;right:-4px;width:92px;height:92px}.course .l{padding:24px 20px}}
 
 /* ---------- packs ---------- */
 .packs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px 22px}
@@ -446,7 +457,7 @@ footer .links2 b{color:var(--fg)}
 @media (prefers-contrast: more){.surf::before,.surf::after{display:none}.surf{outline:2px solid currentColor;outline-offset:-2px}.puff{filter:none!important;color:var(--fg)!important;-webkit-text-fill-color:currentColor}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
-<script>document.documentElement.classList.add("btns")</script>
+<script>/* кнопки и плашки — чистый CSS, без картинок */</script>
 
 <!-- SVG lighting filters: blur the glyph alpha into a height map, then light it — flat text becomes an inflated material -->
 <svg class="fx" aria-hidden="true" focusable="false">
@@ -540,7 +551,7 @@ footer .links2 b{color:var(--fg)}
   <section class="sec" id="course" data-sec="course" data-m="candy">
     <div class="course">
       <div class="l surf">
-        <span class="obj" data-obj="study" aria-hidden="true"></span>
+        <span class="obj" data-obj="course" aria-hidden="true"></span>
         <span class="tag soon" style="align-self:flex-start">Курс · 3 встречи · скоро</span>
         <h2><span class="puff has-img" data-word="parents" style="--c:#FFFFFF;filter:none"><img src="assets/candy/word-parents.webp" alt="ИИ для родителей" width="960" height="310" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
         <p style="font-size:18px;max-width:40ch">Как нейросети помогают ребёнку учиться, а семье — жить спокойнее. Без программирования и без страшилок.</p>
@@ -664,9 +675,9 @@ document.getElementById("support-link").href = `https://t.me/${SUPPORT_BOT}`;
 const STYLES = {candy:{n:1,name:"Карамель",d:"глянцевый лакированный надутый пластик"}};
 const GROUPS = {
   bots:{name:"Нейросети и агенты",c:"--lilac",hex:"#B29BFF"},
-  sites:{name:"Сайты",c:"--violet",hex:"#6A3DF0"},
+  sites:{name:"Сайты",c:"--orange",hex:"#FF8A3D"},
   study:{name:"Учёба",c:"--lime",hex:"#B9EC4A"}, time:{name:"Время",c:"--sky",hex:"#5CC6FF"}, info:{name:"Информация",c:"--pink",hex:"#FF6FAF"},
-  fun:{name:"Творчество",c:"--blue",hex:"#2F6BFF"}
+  fun:{name:"Творчество",c:"--mint",hex:"#3FCFA8"}
 };
 const S = [
   {id:"ai-access",g:"bots",t:"ChatGPT, Claude и Gemini: доступ и оплата",r:"Аккаунт, почта и способ оплаты подписки из России. Подскажем, какая нейросеть подойдёт под ваши задачи.",p:2990,time:"1 час онлайн",wide:true},
@@ -718,7 +729,7 @@ const shareIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICONS = {}; // ICONS[style][group] = PNG data URL
 const styleOf = el => { const h = el && el.closest("[data-m]"); return h ? h.dataset.m : "candy"; };
 const ASSETS = {}; // generated objects: assets/candy/obj-<group>.webp
-const objHTML = (g,st) => ASSETS[g] ? `<img src="${ASSETS[g]}" alt="">` : (ICONS[st] && ICONS[st][g]) ? `<img src="${ICONS[st][g]}" alt="">` : `<span class="orb" style="--c:var(${GROUPS[g].c})"></span>`;
+const objHTML = (g,st) => ASSETS[g] ? `<img src="${ASSETS[g]}" alt="">` : (ICONS[st] && ICONS[st][g]) ? `<img src="${ICONS[st][g]}" alt="">` : `<span class="orb" style="--c:var(${GROUPS[g]?GROUPS[g].c:"--violet"})"></span>`;
 function fillObjs(){ document.querySelectorAll("[data-obj]").forEach(el=>{ el.innerHTML = objHTML(el.dataset.obj, styleOf(el)); }); }
 
 const tickerWords = S.map(s=>s.t.replace(/[«»]/g,""));
@@ -1064,7 +1075,7 @@ let tt; function toast(m){ const el=$("#toast"); el.textContent=m; el.hidden=fal
 
 
 /* ---------- generated assets (assets/candy/*.webp): known files, used directly — no probing, no waiting ---------- */
-["bots","sites","study","time","info","fun"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
+["bots","sites","study","time","info","fun","course"].forEach(g=>{ ASSETS[g]=`assets/candy/obj-${g}.webp`; });
 fillObjs();
 {
     // [x%, y%, width%, tilt°, depth for parallax, behind stickers?]
