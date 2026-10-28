@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Onest:wght@400;500;600;700&display=swap">
+
 <title>ai2start — навыки работы с нейросетями</title>
 <meta name="description" content="Маркетплейс навыков работы с нейросетями: ChatGPT, Claude и Gemini, ИИ-агенты, сайты, учёба, почта, бюджет. Онлайн-встреча, после которой вы повторите всё сами.">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -26,7 +28,7 @@
   --lime:#B9EC4A; --sky:#5CC6FF; --pink:#FF6FAF; --orange:#FF8A3D; --lilac:#B29BFF; --sun:#FFD23F; --violet:#6A3DF0; --blue:#2F6BFF; --mint:#3FCFA8;
   --busy:#E7E1F4; --busy-fg:#6E6690; --err:#C21C61; --scrim:rgba(18,13,34,.55);
   --blob1:rgba(255,111,175,.38); --blob2:rgba(92,198,255,.40); --blob3:rgba(185,236,74,.36); --blob4:rgba(178,155,255,.40);
-  --font-display:"Nunito","Arial Rounded MT Bold","Arial Black",system-ui,sans-serif;
+  --font-display:"Nunito","Arial Rounded MT Bold","Segoe UI",system-ui,-apple-system,sans-serif;
   --font-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-mono:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
@@ -477,6 +479,20 @@ footer .links2 b{color:var(--fg)}
 
 @media (prefers-contrast: more){.surf::before,.surf::after{display:none}.surf{outline:2px solid currentColor;outline-offset:-2px}.puff{filter:none!important;color:var(--fg)!important;-webkit-text-fill-color:currentColor}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ХИТЫ: три главные услуги крупно, с понятным результатом */
+.hits-head{margin:6px 0 40px}
+.hits{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 22px;margin-bottom:56px}
+.card.hit{padding:26px 22px 20px;gap:12px}
+.card.hit h3{font-size:clamp(1.35rem,2.2vw,1.7rem);padding-right:96px;line-height:1.08}
+.card.hit .gain{margin:0;font-size:15px;font-weight:600;opacity:.95}
+.card.hit ul{margin:2px 0 4px;padding:0;list-style:none;display:grid;gap:7px;font-size:14.5px;line-height:1.35}
+.card.hit li{padding-left:22px;position:relative}
+.card.hit li::before{content:"";position:absolute;left:2px;top:.32em;width:11px;height:6px;border-left:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(-45deg);opacity:.9}
+.card.hit .meta{margin-top:auto}
+.card.hit .btn{font-size:16px;padding-block:13px}
+@media (max-width:900px){.hits{grid-template-columns:1fr;gap:44px}}
+@media (max-width:640px){.card.hit{padding:22px 16px 16px}.card.hit h3{padding-right:70px}.hits-head{margin-bottom:34px}}
 </style>
 <script>/* кнопки и плашки — чистый CSS, без картинок */</script>
 
@@ -565,6 +581,8 @@ footer .links2 b{color:var(--fg)}
       <h2><span class="puff has-img" data-word="tasks" style="--c:var(--sky);font-size:clamp(3rem,8vw,6rem);filter:none"><img src="assets/candy/word-tasks.webp" alt="задачи" width="960" height="257" decoding="async" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.parentNode.textContent=this.alt"></span></h2>
       <p>Что приведём в порядок. Объясняем так, что потом вы повторите всё сами. Кнопка со стрелкой собирает баннер для ленты, сторис и Telegram.</p>
     </div>
+    <div class="hits-head"><span class="eyebrow" style="--c:var(--violet)">С чего начать</span></div>
+    <div class="hits" id="hits"></div>
     <div class="chips" id="chips" role="group" aria-label="Фильтр услуг"></div>
     <div class="grid" id="grid"></div>
   </section>
@@ -736,6 +754,11 @@ const S = [
   {id:"neuro-photo",g:"fun",t:"Нейрофотосессия",r:"Портреты, аватарки и открытки по вашим фото: деловой стиль, сказка, семейная открытка.",p:1990,time:"1 час онлайн"},
   {id:"revive-photo",g:"fun",t:"Оживить старое фото",r:"Реставрация семейного снимка и короткое видео из него.",p:1490,time:"1 час онлайн"}
 ];
+const HITS = [
+  {id:"ai-access",gain:"Нейросети работают у вас уже через час",pts:["Рабочий аккаунт ChatGPT, Claude или Gemini на вашей почте","Подскажем, как платить подпиской из России","Первый запрос сделаем вместе, сразу видно, что она умеет"]},
+  {id:"own-agent",gain:"Личный помощник под ваши задачи, не общий чат",pts:["Агент с вашими инструкциями и файлами","Разбор договоров, меню на неделю, рабочие дела","Остаётся у вас: пользуетесь каждый день сами"]},
+  {id:"automation",gain:"Нейросеть сама разбирает почту и заявки",pts:["Итог приходит вам в Telegram","Работает без вас круглосуточно","Начинаем с одного сценария, потом наращиваем"]}
+];
 const PACKS = [
   {t:"Старт с ИИ",items:["Доступ и оплата ChatGPT, Claude или Gemini","Настройка ИИ-ассистента"],p:4990,old:5980},
   {t:"Семейный порядок",items:["Настройка календаря","Синхронизация семьи","Расчистка почты","Семейный бюджет"],p:9900,old:13460,hot:true},
@@ -782,6 +805,15 @@ function renderGrid(){
           <button class="btn btn-plain btn-sm icon-btn" data-banner="${s.id}" aria-label="Баннер и ссылка: ${s.t}">${shareIcon}</button></div>
       </article>`).join("");
   }
+  $("#hits").innerHTML = HITS.map(h=>{ const s=byId[h.id], g=GROUPS[s.g];
+    return `<article class="card surf hit" id="hit-${s.id}" data-grp="${s.g}" style="--c:var(${g.c});--card-c:var(${g.c})">
+      <span class="obj" data-obj="${s.g}" aria-hidden="true"></span>
+      <div class="card-top"><span class="tag">${s.from?"Под ключ":"Хит"}</span></div>
+      <h3>${hy(s.t)}</h3><p class="gain">${h.gain}</p>
+      <ul>${h.pts.map(x=>`<li>${x}</li>`).join("")}</ul>
+      <div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
+      <div class="row"><button class="btn btn-ink" data-pick="${s.id}">Выбрать окно</button></div>
+    </article>`}).join("");
   $("#grid").innerHTML = html;
   fillObjs();
 }
