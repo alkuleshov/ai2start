@@ -514,6 +514,12 @@ footer .links2 b{color:var(--fg)}
   .grid{gap:40px 16px}
   .chips{margin-bottom:26px}
 }
+
+.svc-info{margin:0 0 18px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.55);color:#1B1530;font-size:15px;line-height:1.45}
+.svc-info b{display:block;font-family:var(--font-display);font-size:18px;line-height:1.15;margin-bottom:4px}
+.svc-info p{margin:0 0 8px}
+.svc-info ul{margin:0 0 8px;padding-left:18px}
+.svc-info .si-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-weight:700;font-size:14px;opacity:.9}
 </style>
 <script>/* кнопки и плашки — чистый CSS, без картинок */</script>
 
@@ -642,6 +648,7 @@ footer .links2 b{color:var(--fg)}
     <div class="sched">
       <div class="panel surf">
         <div class="pick"><label for="svc">Задача</label><select id="svc"></select></div>
+        <div class="svc-info" id="svc-info" aria-live="polite"></div>
         <div class="days"><div class="days-in" id="days"></div></div>
         <p class="note" id="days-msg" hidden></p>
         <div id="days-more" hidden style="margin-top:10px"><button class="btn btn-plain btn-sm" id="more-btn">Показать ещё даты</button></div>
@@ -906,7 +913,16 @@ function renderDays(){
       byDay[k].map(x=>`<button class="slot" data-slot="${x}" aria-label="${slotLabel(x)}, свободно">${x.slice(11)}</button>`).join("")}</div></div>`; }).join("");
   more.hidden = keys.length <= shownDays;
 }
+function renderSvcInfo(){
+  const v = svcSel.value, box = $("#svc-info"); if(!box) return;
+  if(v.startsWith("pack-")){ const k = PACKS[+v.slice(5)]; if(!k){ box.innerHTML=""; return; }
+    box.innerHTML = `<b>Пакет «${k.t}»</b><ul>${k.items.map(x=>`<li>${x}</li>`).join("")}</ul><div class="si-meta"><span>${rub(k.p)}</span><span>выгода ${rub(k.old-k.p)}</span></div>`; return; }
+  const s = byId[v]; if(!s){ box.innerHTML=""; return; }
+  const h = (typeof HITS!=="undefined" ? HITS : []).find(x=>x.id===v);
+  box.innerHTML = `<b>${s.t}</b><p>${h?h.gain:s.r}</p>${h?`<ul>${h.pts.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}<div class="si-meta"><span>${priceText(s)}</span><span>${s.time}</span></div>`;
+}
 async function loadSlots(force){
+  renderSvcInfo();
   const svc = svcSel.value;
   if(!force && slotState[svc] && slotState[svc].state==="ok") { renderDays(); return; }
   slotState[svc] = {state:"loading", slots:[]}; renderDays();
@@ -915,6 +931,7 @@ async function loadSlots(force){
   if(svcSel.value===svc) renderDays();
 }
 svcSel.addEventListener("change", ()=>{ shownDays=10; loadSlots(true); });
+renderSvcInfo();
 $("#more-btn").addEventListener("click", ()=>{ shownDays+=10; renderDays(); });
 loadSlots(true);
 
