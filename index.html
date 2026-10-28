@@ -493,6 +493,27 @@ footer .links2 b{color:var(--fg)}
 .card.hit .btn{font-size:16px;padding-block:13px}
 @media (max-width:900px){.hits{grid-template-columns:1fr;gap:44px}}
 @media (max-width:640px){.card.hit{padding:22px 16px 16px}.card.hit h3{padding-right:70px}.hits-head{margin-bottom:34px}}
+
+/* ЛЁГКИЕ КАРТОЧКИ: без тега категории (она в заголовке группы), описание в 3/2 строки, цена и кнопка в одной строке */
+#grid .card{gap:8px;padding-top:20px}
+#grid .card p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#grid .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 10px;margin-top:auto;padding-top:4px}
+#grid .foot .meta{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin:0;padding:0}
+#grid .foot .row{gap:8px;flex-wrap:nowrap}
+.chips{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hh,64px));z-index:15;background:var(--bg);padding:8px 28px 8px 0;margin-bottom:34px}
+.grp-head{scroll-margin-top:calc(var(--hh,64px) + 70px)}
+#grid .card h3{padding-right:104px}
+#grid .card.wide h3{padding-right:140px}
+@media (max-width:640px){
+  #grid .card h3{padding-right:66px}
+  #grid .foot{flex-wrap:nowrap}
+  #grid .foot .pill{font-size:21px;padding:4px 0 0}
+  #grid .foot .icon-btn{display:none}
+  #grid .card p{-webkit-line-clamp:2}
+  #grid .card{padding:14px 14px 12px}
+  .grid{gap:40px 16px}
+  .chips{margin-bottom:26px}
+}
 </style>
 <script>/* кнопки и плашки — чистый CSS, без картинок */</script>
 
@@ -785,7 +806,7 @@ function renderChips(){
   $("#chips").innerHTML = all.map(([k,n,c])=>`<button class="chip" data-f="${k}" aria-pressed="${activeGroup===k}">${c?`<i style="--d:var(${c})"></i>`:""}${n}</button>`).join("");
 }
 // длинные слова в заголовках карточек переносим по слогам, чтобы не заезжали под фигурку
-const hy = t => t.replace("Синхронизация","Синхрони\u00ADзация").replace("Нейрофотосессия","Нейрофото\u00ADсессия");
+const hy = t => t.replace("Синхронизация","Синхрони\u00ADзация").replace("Нейрофотосессия","Нейрофото\u00ADсессия").replace("автоматизация","авто\u00ADматизация").replace("ассистента","ассис\u00ADтента").replace("исследование","иссле\u00ADдование");
 function renderGrid(){
   // Список разворачивается целиком, по группам — чипы наверху только переключают якорем, карточки не скрываются и не перестраиваются (без этого «перепекались» плашки и всё мерцало).
   let html = "";
@@ -796,13 +817,13 @@ function renderGrid(){
     html += items.map(s=>`
       <article class="card surf${s.wide?" wide":""}" id="${s.id}" data-grp="${gk}" style="--c:var(${GROUPS[s.g].c});--card-c:var(${GROUPS[s.g].c})">
         <span class="obj" data-obj="${s.g}" aria-hidden="true"></span>
-        <div class="card-top"><span class="tag${s.soon?" soon":""}">${s.soon?"Скоро":GROUPS[s.g].name}</span></div>
+        ${s.soon?`<div class="card-top"><span class="tag soon">Скоро</span></div>`:""}
         <h3>${hy(s.t)}</h3><p>${s.r}</p>
-        <div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
+        <div class="foot"><div class="meta"><span class="pill">${priceText(s)}</span><span class="time">${s.time}</span></div>
         <div class="row">${s.soon?`<button class="btn btn-sm" data-wait="${s.id}">Хочу первым</button>`:
           s.stream?`<button class="btn btn-ink btn-sm" data-book-stream="${s.stream}">Записаться на поток</button>`:
           `<button class="btn btn-ink btn-sm" data-pick="${s.id}">Выбрать окно</button>`}
-          <button class="btn btn-plain btn-sm icon-btn" data-banner="${s.id}" aria-label="Баннер и ссылка: ${s.t}">${shareIcon}</button></div>
+          <button class="btn btn-plain btn-sm icon-btn" data-banner="${s.id}" aria-label="Баннер и ссылка: ${s.t}">${shareIcon}</button></div></div>
       </article>`).join("");
   }
   $("#hits").innerHTML = HITS.map(h=>{ const s=byId[h.id], g=GROUPS[s.g];
@@ -1288,3 +1309,4 @@ function confetti(){
     if(++t<140) requestAnimationFrame(f); else ctx.clearRect(0,0,cv.width,cv.height); })();
 }
 </script>
+<script>try{const h=document.querySelector("header.top");const f=()=>document.documentElement.style.setProperty("--hh",(h?h.offsetHeight:64)+"px");f();addEventListener("resize",f)}catch(e){}</script>
